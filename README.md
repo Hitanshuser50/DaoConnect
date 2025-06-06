@@ -309,7 +309,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 
 **Team Dao Connect**
 - **Email**: team@dao-connect.network
-- **Website**: [dao-connect.network](https://dao-connect.network)
+- **Website**: [[dao-connect.network](https://dao-connect.vercel.app/)](https://dao-connect.network)
 - **LinkedIn**: [Dao Connect](https://linkedin.com/company/dao-connect)
 
 ---
