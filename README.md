@@ -166,7 +166,7 @@ Git
 ### **Installation**
 \`\`\`bash
 # Clone the repository
-git clone https://github.com/dao-connect/dao-connect-platform.git
+git clone [https://github.com/dao-connect/dao-connect-platform.git](https://github.com/Hitanshuser50/DaoConnect)
 
 # Navigate to project directory
 cd dao-connect-platform
