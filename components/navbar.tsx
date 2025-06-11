@@ -15,7 +15,7 @@ export function Navbar() {
     <header className="sticky top-0 z-50 w-full border-b bg-white">
       <div className="container flex h-16 items-center px-4 md:px-6">
         <Link href="/" className="flex items-center gap-2 font-bold text-xl">
-          <span className="bg-gradient-to-r from-pink-500 via-purple-500 to-blue-500 bg-clip-text text-transparent">
+          <span className="bg-gradient-to-r from-pink-700 via-pink-600 to-blue-400 bg-clip-text text-transparent">
             Dao Connect
           </span>
         </Link>

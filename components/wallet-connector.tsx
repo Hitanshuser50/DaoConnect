@@ -85,8 +85,8 @@ export function WalletConnector() {
             console.log("Network may already exist or user rejected", error)
           }
         }
-      } else if (walletType === "polkadot" || walletType === "talisman" || walletType === "subwallet") {
-        // Connect to Polkadot.js, Talisman or SubWallet
+      } else if (walletType === "polkadot" || walletType === "talisman") {
+        // Connect to Polkadot.js or Talisman
         if (window.injectedWeb3) {
           const extension = window.injectedWeb3[walletType === "polkadot" ? "polkadot-js" : walletType]
           if (extension) {
@@ -141,8 +141,6 @@ export function WalletConnector() {
         return "🦊" // MetaMask icon
       case "talisman":
         return "🔮" // Talisman icon
-      case "subwallet":
-        return "🌐" // SubWallet icon
       default:
         return "💼" // Generic wallet icon
     }
@@ -184,7 +182,7 @@ export function WalletConnector() {
           </div>
         ) : (
           <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid grid-cols-4 mb-4">
+            <TabsList className="grid grid-cols-3 mb-3">
               {["polkadot", "metamask", "talisman", "subwallet"].map((wallet) => (
                 <TabsTrigger key={wallet} value={wallet} disabled={!wallets.includes(wallet)} className="capitalize">
                   {getWalletIcon(wallet)} {wallet === "polkadot" ? "Polkadot.js" : wallet}
