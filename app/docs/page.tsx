@@ -1,4 +1,4 @@
-import { Documentation } from "@/components/documentation"
+import { Documentation } from "@/DaoConnect/components/documentation"
 
 export default function DocsPage() {
   return <Documentation />

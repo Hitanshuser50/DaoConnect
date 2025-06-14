@@ -3,13 +3,14 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
+import { Card } from "@/DaoConnect/components/ui/card"
+import { Button } from "@/DaoConnect/components/ui/button"
+import { Input } from "@/DaoConnect/components/ui/input"
+import { Textarea } from "@/DaoConnect/components/ui/textarea"
+import { Label } from "@/DaoConnect/components/ui/label"
+import { Badge } from "@/DaoConnect/components/ui/badge"
 import { Loader2, Sparkles, CheckCircle } from "lucide-react"
+import { useAuth } from "@/lib/auth"
 
 export function CreateDAOForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -24,15 +25,36 @@ export function CreateDAOForm() {
     xcmConfiguration: "", // Added for Polkadot
   })
 
+  const { wallet } = useAuth()
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
     setIsLoading(true)
 
-    // Simulate contract deployment
-    await new Promise((resolve) => setTimeout(resolve, 3000))
+    try {
+      const response = await fetch("/api/daos", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          ...formData,
+          founder: wallet?.address, // Get from auth context
+        }),
+      })
 
-    setIsLoading(false)
-    setStep(3)
+      if (!response.ok) {
+        throw new Error("Failed to create DAO")
+      }
+
+      const result = await response.json()
+      console.log("DAO created:", result)
+      setStep(3)
+    } catch (error) {
+      console.error("Error creating DAO:", error)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const categories = [

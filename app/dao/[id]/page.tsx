@@ -1,4 +1,4 @@
-import { DAODashboard } from "@/components/dao-dashboard"
+import { DAODashboard } from "@/DaoConnect/components/dao-dashboard"
 
 interface DAOPageProps {
   params: {

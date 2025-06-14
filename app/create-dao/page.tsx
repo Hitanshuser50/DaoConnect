@@ -1,4 +1,4 @@
-import { CreateDAOForm } from "@/components/create-dao-form"
+import { CreateDAOForm } from "@/DaoConnect/components/create-dao-form"
 
 export default function CreateDAOPage() {
   return (
