@@ -2,14 +2,14 @@
 
 import { useState, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
-import { Card, CardContent } from "@/DaoConnect/components/ui/modern-card"
-import { ModernButton } from "@/DaoConnect/components/ui/modern-button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { Input } from "@/DaoConnect/components/ui/input"
-import { Avatar, AvatarFallback, AvatarImage } from "@/DaoConnect/components/ui/avatar"
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/DaoConnect/components/ui/select"
-import { Skeleton } from "@/DaoConnect/components/ui/loading-skeleton"
-import { StaggerContainer, StaggerItem } from "@/DaoConnect/components/ui/page-transition"
+import { Card, CardContent } from "@/components/ui/modern-card"
+import { ModernButton } from "@/components/ui/modern-button"
+import { Badge } from "@/components/ui/badge"
+import { Input } from "@/components/ui/input"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
+import { Skeleton } from "@/components/ui/loading-skeleton"
+import { StaggerContainer, StaggerItem } from "@/components/ui/page-transition"
 import {
   Users,
   Vote,

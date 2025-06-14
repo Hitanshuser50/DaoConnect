@@ -1,7 +1,7 @@
 "use client"
 
 import { useState } from "react"
-import { Button } from "@/DaoConnect/components/ui/button"
+import { Button } from "@/components/ui/button"
 import {
   Dialog,
   DialogContent,
@@ -9,17 +9,17 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "@/DaoConnect/components/ui/dialog"
+} from "@/components/ui/dialog"
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/DaoConnect/components/ui/dropdown-menu"
-import { Badge } from "@/DaoConnect/components/ui/badge"
+} from "@/components/ui/dropdown-menu"
+import { Badge } from "@/components/ui/badge"
 import { Wallet, Copy, ExternalLink, LogOut } from "lucide-react"
-import { useSimpleWallet } from "@/DaoConnect/hooks/use-simple-wallet"
+import { useSimpleWallet } from "@/hooks/use-simple-wallet"
 import { toast } from "sonner"
 
 export function SimpleWalletButton() {

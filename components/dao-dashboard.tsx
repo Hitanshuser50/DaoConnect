@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Card } from "@/DaoConnect/components/ui/card"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/DaoConnect/components/ui/tabs"
-import { Progress } from "@/DaoConnect/components/ui/progress"
-import { Avatar, AvatarFallback, AvatarImage } from "@/DaoConnect/components/ui/avatar"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Progress } from "@/components/ui/progress"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   Users,
   Vote,
@@ -28,7 +28,7 @@ import {
   Target,
   Loader2,
 } from "lucide-react"
-import { ProposalCreator } from "@/DaoConnect/components/proposal-creator"
+import { ProposalCreator } from "@/components/proposal-creator"
 
 interface DAODashboardProps {
   daoId: string

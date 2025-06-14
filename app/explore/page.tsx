@@ -1,7 +1,7 @@
 "use client"
 
-import { PageTransition } from "@/DaoConnect/components/ui/page-transition"
-import { ExploreDAOs } from "@/DaoConnect/components/explore-daos"
+import { PageTransition } from "@/components/ui/page-transition"
+import { ExploreDAOs } from "@/components/explore-daos"
 
 export default function ExplorePage() {
   return (

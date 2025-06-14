@@ -1,7 +1,7 @@
 // Consolidated loading components
 
-import { Skeleton } from "@/DaoConnect/components/ui/skeleton"
-import { Card } from "@/DaoConnect/components/ui/card"
+import { Skeleton } from "@/components/ui/skeleton"
+import { Card } from "@/components/ui/card"
 
 export function DAOCardSkeleton() {
   return (

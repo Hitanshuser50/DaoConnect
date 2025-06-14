@@ -1,10 +1,10 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/DaoConnect/components/ui/card"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { Progress } from "@/DaoConnect/components/ui/progress"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
 import { ThumbsUp, ThumbsDown, Smartphone, Vibrate, Volume2, Eye, MessageSquare, Share2, Bookmark } from "lucide-react"
 
 interface MobileVotingInterfaceProps {

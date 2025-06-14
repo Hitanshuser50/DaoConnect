@@ -4,9 +4,9 @@ import type React from "react"
 
 import { useState } from "react"
 import { useConnect, useAccount, useDisconnect } from "wagmi"
-import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/DaoConnect/components/ui/dialog"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Card, CardContent } from "@/DaoConnect/components/ui/card"
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { Wallet, ExternalLink, Copy, LogOut } from "lucide-react"
 import { toast } from "sonner"
 

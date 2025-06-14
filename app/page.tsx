@@ -1,12 +1,12 @@
 "use client"
 
-import { PageTransition } from "@/DaoConnect/components/ui/page-transition"
-import { Hero } from "@/DaoConnect/components/hero"
-import { Features } from "@/DaoConnect/components/features"
-import { Stats } from "@/DaoConnect/components/stats"
-import { HowItWorks } from "@/DaoConnect/components/how-it-works"
-import { Testimonials } from "@/DaoConnect/components/testimonials"
-import { Newsletter } from "@/DaoConnect/components/newsletter"
+import { PageTransition } from "@/components/ui/page-transition"
+import { Hero } from "@/components/hero"
+import { Features } from "@/components/features"
+import { Stats } from "@/components/stats"
+import { HowItWorks } from "@/components/how-it-works"
+import { Testimonials } from "@/components/testimonials"
+import { Newsletter } from "@/components/newsletter"
 
 export default function Home() {
   return (

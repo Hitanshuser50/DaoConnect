@@ -3,8 +3,8 @@
 import { useState } from "react"
 import Image from "next/image"
 import { Star, Quote, ArrowLeft, ArrowRight } from "lucide-react"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Card, CardContent } from "@/DaoConnect/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { imagePaths, getImagePath } from "@/lib/image-paths"
 
 const testimonials = [

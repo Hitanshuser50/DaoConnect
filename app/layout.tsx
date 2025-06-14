@@ -2,10 +2,10 @@ import type React from "react"
 import type { Metadata } from "next"
 import { Inter } from "next/font/google"
 import "./globals.css"
-import { Navbar } from "@/DaoConnect/components/navbar"
-import { Footer } from "@/DaoConnect/components/footer"
-import { Toaster } from "@/DaoConnect/components/ui/sonner"
-import { WalletProvider } from "@/DaoConnect/components/providers/wallet-provider"
+import { Navbar } from "@/components/navbar"
+import { Footer } from "@/components/footer"
+import { Toaster } from "@/components/ui/sonner"
+import { WalletProvider } from "@/components/providers/wallet-provider"
 
 const inter = Inter({ subsets: ["latin"] })
 

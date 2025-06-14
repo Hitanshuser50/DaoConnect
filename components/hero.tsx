@@ -2,9 +2,9 @@
 
 import { useState, useEffect } from "react"
 import Link from "next/link"
-import { ModernButton } from "@/DaoConnect/components/ui/modern-button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { Card } from "@/DaoConnect/components/ui/modern-card"
+import { ModernButton } from "@/components/ui/modern-button"
+import { Badge } from "@/components/ui/badge"
+import { Card } from "@/components/ui/modern-card"
 import { ArrowRight, Sparkles, Users, Vote, Zap, Globe, Shield, Rocket, TrendingUp, Play, Plus } from "lucide-react"
 
 export function Hero() {

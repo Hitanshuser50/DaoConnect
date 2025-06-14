@@ -1,10 +1,10 @@
 "use client"
 
 import { motion } from "framer-motion"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/DaoConnect/components/ui/modern-card"
-import { ModernButton } from "@/DaoConnect/components/ui/modern-button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { StaggerContainer, StaggerItem } from "@/DaoConnect/components/ui/page-transition"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/modern-card"
+import { ModernButton } from "@/components/ui/modern-button"
+import { Badge } from "@/components/ui/badge"
+import { StaggerContainer, StaggerItem } from "@/components/ui/page-transition"
 import {
   Brain,
   Shield,

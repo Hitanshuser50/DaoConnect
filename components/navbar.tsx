@@ -3,12 +3,12 @@
 import { useState, useEffect } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { ThemeToggle } from "@/DaoConnect/components/ui/theme-toggle"
-import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/DaoConnect/components/ui/sheet"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { ThemeToggle } from "@/components/ui/theme-toggle"
+import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from "@/components/ui/sheet"
 import { Search, Plus, Trophy, BookOpen, Zap, Globe, Sparkles, Menu } from "lucide-react"
-import { SimpleWalletButton } from "@/DaoConnect/components/wallet/simple-wallet-button"
+import { SimpleWalletButton } from "@/components/wallet/simple-wallet-button"
 
 export function Navbar() {
   const [isOpen, setIsOpen] = useState(false)

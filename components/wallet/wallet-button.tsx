@@ -1,7 +1,7 @@
 "use client"
 
 import { useAccount } from "wagmi"
-import { Button } from "@/DaoConnect/components/ui/button"
+import { Button } from "@/components/ui/button"
 import { ConnectWalletDialog } from "./connect-wallet-dialog"
 import { Wallet } from "lucide-react"
 

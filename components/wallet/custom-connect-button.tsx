@@ -1,10 +1,10 @@
 "use client"
 
 import { ConnectButton } from "@rainbow-me/rainbowkit"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { ModernButton } from "@/DaoConnect/components/ui/modern-button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { Avatar, AvatarFallback, AvatarImage } from "@/DaoConnect/components/ui/avatar"
+import { Button } from "@/components/ui/button"
+import { ModernButton } from "@/components/ui/modern-button"
+import { Badge } from "@/components/ui/badge"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "@/DaoConnect/components/ui/dropdown-menu"
+} from "@/components/ui/dropdown-menu"
 import { Wallet, Copy, ExternalLink, LogOut, Settings, LayoutDashboard, Users, Plus, ChevronDown } from "lucide-react"
 import { toast } from "sonner"
 

@@ -1,4 +1,4 @@
-import { Leaderboard } from "@/DaoConnect/components/leaderboard"
+import { Leaderboard } from "@/components/leaderboard"
 
 export default function LeaderboardPage() {
   return (

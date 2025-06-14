@@ -1,13 +1,13 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/DaoConnect/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/DaoConnect/components/ui/tabs"
+import { Button } from "@/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Copy, Check, Wallet, ExternalLink, AlertTriangle, Loader2 } from "lucide-react"
-import { useWallet } from "@/DaoConnect/hooks/use-wallet"
-import { Alert, AlertDescription } from "@/DaoConnect/components/ui/alert"
-import { Badge } from "@/DaoConnect/components/ui/badge"
+import { useWallet } from "@/hooks/use-wallet"
+import { Alert, AlertDescription } from "@/components/ui/alert"
+import { Badge } from "@/components/ui/badge"
 
 export function WalletConnector() {
   const {

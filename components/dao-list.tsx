@@ -1,8 +1,8 @@
 "use client"
 
-import { Card } from "@/DaoConnect/components/ui/card"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
+import { Card } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
 import { Users, Vote, ExternalLink, MapPin, Calendar, TrendingUp } from "lucide-react"
 import Link from "next/link"
 

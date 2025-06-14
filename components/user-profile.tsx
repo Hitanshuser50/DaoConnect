@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/DaoConnect/components/ui/card"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/DaoConnect/components/ui/avatar"
-import { Progress } from "@/DaoConnect/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/DaoConnect/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { Badge } from "@/components/ui/badge"
+import { Button } from "@/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import {
   Trophy,
   Users,

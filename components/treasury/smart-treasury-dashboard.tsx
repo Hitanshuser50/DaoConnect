@@ -1,11 +1,11 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/DaoConnect/components/ui/card"
-import { Button } from "@/DaoConnect/components/ui/button"
-import { Badge } from "@/DaoConnect/components/ui/badge"
-import { Progress } from "@/DaoConnect/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/DaoConnect/components/ui/tabs"
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card"
+import { Button } from "@/components/ui/button"
+import { Badge } from "@/components/ui/badge"
+import { Progress } from "@/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { Wallet, TrendingUp, PieChart, Zap, Shield, Target, RefreshCw, BarChart3 } from "lucide-react"
 import { treasuryManager } from "@/lib/treasury/smart-treasury"
 
