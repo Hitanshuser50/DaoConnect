@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Input } from "@/components/ui/input"
+import { Card } from "@/DaoConnect/components/ui/card"
+import { Button } from "@/DaoConnect/components/ui/button"
+import { Textarea } from "@/DaoConnect/components/ui/textarea"
+import { Label } from "@/DaoConnect/components/ui/label"
+import { Badge } from "@/DaoConnect/components/ui/badge"
+import { Input } from "@/DaoConnect/components/ui/input"
 import {
   ArrowLeft,
   Brain,

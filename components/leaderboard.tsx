@@ -1,17 +1,16 @@
 "use client"
 
 import { useState } from "react"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { Badge } from "@/components/ui/badge"
-import { Button } from "@/components/ui/button"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
+import { Card, CardContent, CardHeader, CardTitle } from "@/DaoConnect/components/ui/card"
+import { Badge } from "@/DaoConnect/components/ui/badge"
+import { Button } from "@/DaoConnect/components/ui/button"
+import { Avatar, AvatarFallback, AvatarImage } from "@/DaoConnect/components/ui/avatar"
+import { Progress } from "@/DaoConnect/components/ui/progress"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/DaoConnect/components/ui/tabs"
 import {
   Trophy,
   Medal,
   Award,
-  TrendingUp,
   Users,
   Vote,
   Target,
@@ -22,9 +21,13 @@ import {
   ChevronUp,
   Filter,
   Download,
+  Zap,
+  Star,
+  Gift,
+  Calendar,
 } from "lucide-react"
 
-// Enhanced leaderboard data with Indian context
+// Enhanced leaderboard data with gamification
 const topContributors = [
   {
     rank: 1,
@@ -34,6 +37,7 @@ const topContributors = [
     location: "Mumbai, Maharashtra",
     totalScore: 9847,
     weeklyChange: +234,
+    monthlyPoints: 1250,
     badges: ["Pioneer", "Top Voter", "Proposal Master"],
     stats: {
       proposalsCreated: 23,
@@ -42,16 +46,22 @@ const topContributors = [
       daosJoined: 8,
       treasuryContributed: "₹12.5L",
       membersSponored: 45,
+      commentsPosted: 89,
+      duplicatesReported: 12,
     },
     achievements: [
-      { name: "First DAO Creator", date: "Jan 2024", rarity: "Legendary" },
-      { name: "100 Proposals", date: "Mar 2024", rarity: "Epic" },
-      { name: "Community Builder", date: "Feb 2024", rarity: "Rare" },
+      { name: "First DAO Creator", date: "Jan 2024", rarity: "Legendary", points: 500 },
+      { name: "100 Proposals", date: "Mar 2024", rarity: "Epic", points: 300 },
+      { name: "Community Builder", date: "Feb 2024", rarity: "Rare", points: 150 },
     ],
     specialties: ["DeFi", "Governance", "Community Building"],
     joinedDate: "January 2024",
     streak: 45,
     tier: "Diamond",
+    level: 15,
+    nextLevelPoints: 153,
+    connectTokens: 2847,
+    nftBadges: 8,
   },
   {
     rank: 2,
@@ -61,6 +71,7 @@ const topContributors = [
     location: "Bangalore, Karnataka",
     totalScore: 8923,
     weeklyChange: +189,
+    monthlyPoints: 1100,
     badges: ["AgTech Expert", "Innovation Leader", "Mentor"],
     stats: {
       proposalsCreated: 19,
@@ -69,16 +80,22 @@ const topContributors = [
       daosJoined: 6,
       treasuryContributed: "₹8.7L",
       membersSponored: 38,
+      commentsPosted: 67,
+      duplicatesReported: 8,
     },
     achievements: [
-      { name: "AgTech Pioneer", date: "Feb 2024", rarity: "Legendary" },
-      { name: "Farmer's Friend", date: "Mar 2024", rarity: "Epic" },
-      { name: "Tech Innovator", date: "Jan 2024", rarity: "Rare" },
+      { name: "AgTech Pioneer", date: "Feb 2024", rarity: "Legendary", points: 500 },
+      { name: "Farmer's Friend", date: "Mar 2024", rarity: "Epic", points: 300 },
+      { name: "Tech Innovator", date: "Jan 2024", rarity: "Rare", points: 150 },
     ],
     specialties: ["Agriculture", "Technology", "Rural Development"],
     joinedDate: "February 2024",
     streak: 38,
     tier: "Diamond",
+    level: 14,
+    nextLevelPoints: 77,
+    connectTokens: 2156,
+    nftBadges: 6,
   },
   {
     rank: 3,
@@ -88,6 +105,7 @@ const topContributors = [
     location: "Pune, Maharashtra",
     totalScore: 7654,
     weeklyChange: +156,
+    monthlyPoints: 950,
     badges: ["Smart City Advocate", "Tech Guru", "Collaborator"],
     stats: {
       proposalsCreated: 15,
@@ -96,153 +114,57 @@ const topContributors = [
       daosJoined: 5,
       treasuryContributed: "₹6.2L",
       membersSponored: 29,
+      commentsPosted: 45,
+      duplicatesReported: 5,
     },
     achievements: [
-      { name: "Smart City Builder", date: "Mar 2024", rarity: "Epic" },
-      { name: "Tech Visionary", date: "Feb 2024", rarity: "Rare" },
-      { name: "Community Connector", date: "Jan 2024", rarity: "Common" },
+      { name: "Smart City Builder", date: "Mar 2024", rarity: "Epic", points: 300 },
+      { name: "Tech Visionary", date: "Feb 2024", rarity: "Rare", points: 150 },
+      { name: "Community Connector", date: "Jan 2024", rarity: "Common", points: 50 },
     ],
     specialties: ["Smart Cities", "IoT", "Urban Planning"],
     joinedDate: "January 2024",
     streak: 32,
     tier: "Platinum",
+    level: 12,
+    nextLevelPoints: 346,
+    connectTokens: 1876,
+    nftBadges: 4,
   },
 ]
 
-const allMembers = [
-  ...topContributors,
-  {
-    rank: 4,
-    name: "Dr. Sunita Reddy",
-    username: "@sunita_health",
-    avatar: "/placeholder.svg?height=60&width=60",
-    location: "Hyderabad, Telangana",
-    totalScore: 6789,
-    weeklyChange: +98,
-    badges: ["Healthcare Expert", "Research Leader"],
-    stats: {
-      proposalsCreated: 12,
-      proposalsPassed: 10,
-      votesParticipated: 87,
-      daosJoined: 4,
-      treasuryContributed: "₹4.8L",
-      membersSponored: 22,
-    },
-    achievements: [
-      { name: "Healthcare Pioneer", date: "Feb 2024", rarity: "Epic" },
-      { name: "Research Excellence", date: "Mar 2024", rarity: "Rare" },
-    ],
-    specialties: ["Healthcare", "Research", "Medical Technology"],
-    joinedDate: "February 2024",
-    streak: 28,
-    tier: "Gold",
-  },
-  {
-    rank: 5,
-    name: "Karan Johar",
-    username: "@karan_creator",
-    avatar: "/placeholder.svg?height=60&width=60",
-    location: "Mumbai, Maharashtra",
-    totalScore: 5432,
-    weeklyChange: +145,
-    badges: ["Creator Economy", "Entertainment"],
-    stats: {
-      proposalsCreated: 8,
-      proposalsPassed: 6,
-      votesParticipated: 65,
-      daosJoined: 3,
-      treasuryContributed: "₹3.2L",
-      membersSponored: 18,
-    },
-    achievements: [
-      { name: "Content Creator", date: "Mar 2024", rarity: "Rare" },
-      { name: "Entertainment Leader", date: "Apr 2024", rarity: "Common" },
-    ],
-    specialties: ["Entertainment", "Content Creation", "Media"],
-    joinedDate: "March 2024",
-    streak: 15,
-    tier: "Gold",
-  },
+// Gamification system
+const pointsSystem = [
+  { action: "Proposal Created", points: 50, icon: Target, color: "text-purple-600" },
+  { action: "Proposal Passed", points: 30, icon: Trophy, color: "text-yellow-600" },
+  { action: "Vote Cast", points: 10, icon: Vote, color: "text-blue-600" },
+  { action: "Comment Posted", points: 5, icon: Award, color: "text-green-600" },
+  { action: "Duplicate Reported", points: 15, icon: Star, color: "text-orange-600" },
+  { action: "Treasury Action", points: 25, icon: Zap, color: "text-pink-600" },
+  { action: "Member Sponsored", points: 20, icon: Users, color: "text-indigo-600" },
 ]
 
-const daoLeaderboard = [
+const monthlyRewards = [
   {
-    rank: 1,
-    name: "Bharat DeFi Collective",
-    category: "DeFi",
-    members: 2847,
-    treasury: "₹1.25Cr",
-    proposals: 34,
-    successRate: 87,
-    growth: "+23%",
-    founder: "Rajesh Kumar",
-    location: "Mumbai",
-    weeklyChange: +12,
-  },
-  {
-    rank: 2,
-    name: "Kisan Tech DAO",
-    category: "Agriculture",
-    members: 1923,
-    treasury: "₹89L",
-    proposals: 28,
-    successRate: 94,
-    growth: "+45%",
-    founder: "Priya Sharma",
-    location: "Punjab",
-    weeklyChange: +8,
-  },
-  {
-    rank: 3,
-    name: "Smart City Alliance",
-    category: "Urban Tech",
-    members: 1567,
-    treasury: "₹67L",
-    proposals: 22,
-    successRate: 82,
-    growth: "+18%",
-    founder: "Amit Patel",
-    location: "Pune",
-    weeklyChange: +5,
-  },
-]
-
-const achievements = [
-  {
-    name: "DAO Pioneer",
-    description: "Created the first DAO on the platform",
-    rarity: "Legendary",
-    holders: 1,
+    rank: "1st Place",
+    reward: "1000 CONNECT + Legendary NFT",
+    description: "Top contributor of the month",
     icon: Crown,
-    color: "text-yellow-600",
-    bgColor: "bg-yellow-50",
+    color: "text-yellow-600 bg-yellow-50",
   },
   {
-    name: "Proposal Master",
-    description: "Created 50+ successful proposals",
-    rarity: "Epic",
-    holders: 3,
-    icon: Target,
-    color: "text-purple-600",
-    bgColor: "bg-purple-50",
+    rank: "2nd-5th Place",
+    reward: "500 CONNECT + Epic NFT",
+    description: "Outstanding contributors",
+    icon: Medal,
+    color: "text-silver-600 bg-gray-50",
   },
   {
-    name: "Community Builder",
-    description: "Sponsored 25+ new members",
-    rarity: "Rare",
-    holders: 12,
-    icon: Users,
-    color: "text-blue-600",
-    bgColor: "bg-blue-50",
-  },
-  {
-    name: "Voting Champion",
-    description: "Participated in 100+ votes",
-    rarity: "Common",
-    holders: 45,
-    icon: Vote,
-    color: "text-green-600",
-    bgColor: "bg-green-50",
+    rank: "6th-20th Place",
+    reward: "200 CONNECT + Rare NFT",
+    description: "Active community members",
+    icon: Award,
+    color: "text-bronze-600 bg-amber-50",
   },
 ]
 
@@ -264,19 +186,6 @@ export function Leaderboard() {
     }
   }
 
-  const getRarityColor = (rarity: string) => {
-    switch (rarity) {
-      case "Legendary":
-        return "text-yellow-600 bg-yellow-50 border-yellow-200"
-      case "Epic":
-        return "text-purple-600 bg-purple-50 border-purple-200"
-      case "Rare":
-        return "text-blue-600 bg-blue-50 border-blue-200"
-      default:
-        return "text-green-600 bg-green-50 border-green-200"
-    }
-  }
-
   const getRankIcon = (rank: number) => {
     switch (rank) {
       case 1:
@@ -294,11 +203,67 @@ export function Leaderboard() {
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-slate-900 mb-4">🏆 Leaderboard</h1>
+        <h1 className="text-4xl font-bold text-slate-900 mb-4">🏆 DaoConnect Leaderboard</h1>
         <p className="text-xl text-slate-600 max-w-3xl mx-auto">
           Celebrating the top contributors, innovators, and leaders in India's DAO ecosystem. Compete, collaborate, and
-          climb the ranks!
+          climb the ranks to earn CONNECT tokens and exclusive NFT badges!
         </p>
+      </div>
+
+      {/* Gamification Overview */}
+      <div className="mb-8">
+        <Card className="bg-gradient-to-r from-purple-50 via-blue-50 to-pink-50 border-purple-200">
+          <CardContent className="p-6">
+            <div className="text-center mb-6">
+              <h2 className="text-2xl font-bold text-slate-900 mb-2">🎮 Gamified Governance</h2>
+              <p className="text-slate-600">
+                Earn points, unlock achievements, and get rewarded for your contributions!
+              </p>
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 lg:grid-cols-7 gap-4">
+              {pointsSystem.map((item, index) => {
+                const Icon = item.icon
+                return (
+                  <div key={index} className="text-center p-3 bg-white rounded-lg shadow-sm">
+                    <Icon className={`h-6 w-6 mx-auto mb-2 ${item.color}`} />
+                    <div className="text-sm font-medium text-slate-900">{item.action}</div>
+                    <div className="text-xs text-slate-500">+{item.points} pts</div>
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
+      </div>
+
+      {/* Monthly Rewards */}
+      <div className="mb-8">
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Gift className="h-5 w-5" />
+              Monthly Rewards Program
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <div className="grid md:grid-cols-3 gap-4">
+              {monthlyRewards.map((reward, index) => {
+                const Icon = reward.icon
+                return (
+                  <div key={index} className={`p-4 rounded-lg border ${reward.color}`}>
+                    <div className="flex items-center gap-2 mb-2">
+                      <Icon className="h-5 w-5" />
+                      <span className="font-semibold">{reward.rank}</span>
+                    </div>
+                    <div className="font-medium text-slate-900 mb-1">{reward.reward}</div>
+                    <div className="text-sm text-slate-600">{reward.description}</div>
+                  </div>
+                )
+              })}
+            </div>
+          </CardContent>
+        </Card>
       </div>
 
       {/* Controls */}
@@ -340,9 +305,8 @@ export function Leaderboard() {
       </div>
 
       <Tabs value={selectedTab} onValueChange={setSelectedTab} className="space-y-6">
-        <TabsList className="grid w-full grid-cols-4">
+        <TabsList className="grid w-full grid-cols-3">
           <TabsTrigger value="contributors">Top Contributors</TabsTrigger>
-          <TabsTrigger value="daos">Top DAOs</TabsTrigger>
           <TabsTrigger value="achievements">Achievements</TabsTrigger>
           <TabsTrigger value="analytics">Analytics</TabsTrigger>
         </TabsList>
@@ -378,10 +342,15 @@ export function Leaderboard() {
                   <h3 className="text-xl font-bold text-slate-900 mb-1">{contributor.name}</h3>
                   <p className="text-sm text-slate-600 mb-2">{contributor.username}</p>
 
-                  <Badge className={`mb-3 ${getTierColor(contributor.tier)}`} variant="outline">
-                    <Crown className="h-3 w-3 mr-1" />
-                    {contributor.tier}
-                  </Badge>
+                  <div className="flex items-center justify-center gap-2 mb-3">
+                    <Badge className={`${getTierColor(contributor.tier)}`} variant="outline">
+                      <Crown className="h-3 w-3 mr-1" />
+                      {contributor.tier}
+                    </Badge>
+                    <Badge variant="outline" className="text-xs">
+                      Level {contributor.level}
+                    </Badge>
+                  </div>
 
                   <div className="space-y-2 mb-4">
                     <div className="flex justify-between text-sm">
@@ -389,10 +358,12 @@ export function Leaderboard() {
                       <span className="font-bold text-slate-900">{contributor.totalScore.toLocaleString()}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-slate-600">Weekly Change</span>
-                      <span className="font-medium text-green-600 flex items-center">
-                        <ChevronUp className="h-3 w-3 mr-1" />+{contributor.weeklyChange}
-                      </span>
+                      <span className="text-slate-600">CONNECT Tokens</span>
+                      <span className="font-medium text-purple-600">{contributor.connectTokens}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-slate-600">NFT Badges</span>
+                      <span className="font-medium text-blue-600">{contributor.nftBadges}</span>
                     </div>
                     <div className="flex justify-between text-sm">
                       <span className="text-slate-600">Streak</span>
@@ -401,6 +372,15 @@ export function Leaderboard() {
                         {contributor.streak} days
                       </span>
                     </div>
+                  </div>
+
+                  {/* Level Progress */}
+                  <div className="mb-4">
+                    <div className="flex justify-between text-xs mb-1">
+                      <span>Level {contributor.level}</span>
+                      <span>{contributor.nextLevelPoints} to next level</span>
+                    </div>
+                    <Progress value={75} className="h-2" />
                   </div>
 
                   <Button
@@ -415,17 +395,17 @@ export function Leaderboard() {
             ))}
           </div>
 
-          {/* Full Leaderboard */}
+          {/* Monthly Leaderboard */}
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
-                <TrendingUp className="h-5 w-5" />
-                Complete Rankings
+                <Calendar className="h-5 w-5" />
+                Monthly Leaderboard - December 2024
               </CardTitle>
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                {allMembers.map((member) => (
+                {topContributors.map((member, index) => (
                   <div
                     key={member.rank}
                     className="flex items-center justify-between p-4 border rounded-lg hover:bg-slate-50 transition-colors"
@@ -449,6 +429,9 @@ export function Leaderboard() {
                           <Badge className={getTierColor(member.tier)} variant="outline" size="sm">
                             {member.tier}
                           </Badge>
+                          <Badge variant="outline" size="sm">
+                            L{member.level}
+                          </Badge>
                         </div>
                         <div className="flex items-center gap-2 text-sm text-slate-500">
                           <MapPin className="h-3 w-3" />
@@ -461,10 +444,15 @@ export function Leaderboard() {
 
                     <div className="flex items-center gap-6">
                       <div className="text-right">
-                        <div className="font-bold text-slate-900">{member.totalScore.toLocaleString()}</div>
+                        <div className="font-bold text-slate-900">{member.monthlyPoints} pts</div>
                         <div className="text-sm text-green-600 flex items-center">
                           <ChevronUp className="h-3 w-3 mr-1" />+{member.weeklyChange}
                         </div>
+                      </div>
+
+                      <div className="text-right">
+                        <div className="font-bold text-purple-600">{member.connectTokens} CONNECT</div>
+                        <div className="text-sm text-blue-600">{member.nftBadges} NFT Badges</div>
                       </div>
 
                       <Button onClick={() => setSelectedMember(member)} variant="outline" size="sm">
@@ -478,89 +466,32 @@ export function Leaderboard() {
           </Card>
         </TabsContent>
 
-        {/* Top DAOs */}
-        <TabsContent value="daos" className="space-y-6">
-          <Card>
-            <CardHeader>
-              <CardTitle className="flex items-center gap-2">
-                <Users className="h-5 w-5" />
-                Top Performing DAOs
-              </CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="space-y-4">
-                {daoLeaderboard.map((dao) => (
-                  <div
-                    key={dao.rank}
-                    className="flex items-center justify-between p-6 border rounded-lg hover:bg-slate-50 transition-colors"
-                  >
-                    <div className="flex items-center gap-4">
-                      <div className="w-8 text-center">{getRankIcon(dao.rank)}</div>
-
-                      <div>
-                        <div className="flex items-center gap-2 mb-1">
-                          <h4 className="font-semibold text-slate-900">{dao.name}</h4>
-                          <Badge variant="outline">{dao.category}</Badge>
-                        </div>
-                        <div className="flex items-center gap-4 text-sm text-slate-500">
-                          <span className="flex items-center gap-1">
-                            <Users className="h-3 w-3" />
-                            {dao.members.toLocaleString()} members
-                          </span>
-                          <span className="flex items-center gap-1">
-                            <MapPin className="h-3 w-3" />
-                            {dao.location}
-                          </span>
-                          <span>Founded by {dao.founder}</span>
-                        </div>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-3 gap-6 text-center">
-                      <div>
-                        <div className="font-bold text-slate-900">{dao.treasury}</div>
-                        <div className="text-xs text-slate-500">Treasury</div>
-                      </div>
-                      <div>
-                        <div className="font-bold text-slate-900">{dao.successRate}%</div>
-                        <div className="text-xs text-slate-500">Success Rate</div>
-                      </div>
-                      <div>
-                        <div className="font-bold text-green-600">{dao.growth}</div>
-                        <div className="text-xs text-slate-500">Growth</div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </CardContent>
-          </Card>
-        </TabsContent>
-
-        {/* Achievements */}
+        {/* Achievements Tab */}
         <TabsContent value="achievements" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {achievements.map((achievement) => {
-              const Icon = achievement.icon
+            {pointsSystem.map((item, index) => {
+              const Icon = item.icon
               return (
-                <Card key={achievement.name} className="hover:shadow-md transition-shadow">
+                <Card key={index} className="hover:shadow-md transition-shadow">
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
-                      <div className={`p-3 rounded-lg ${achievement.bgColor}`}>
-                        <Icon className={`h-6 w-6 ${achievement.color}`} />
+                      <div className="p-3 rounded-lg bg-slate-50">
+                        <Icon className={`h-6 w-6 ${item.color}`} />
                       </div>
                       <div className="flex-1">
                         <div className="flex items-center gap-2 mb-2">
-                          <h3 className="font-semibold text-slate-900">{achievement.name}</h3>
-                          <Badge className={getRarityColor(achievement.rarity)} variant="outline">
-                            {achievement.rarity}
+                          <h3 className="font-semibold text-slate-900">{item.action}</h3>
+                          <Badge variant="outline" className="text-xs">
+                            +{item.points} pts
                           </Badge>
                         </div>
-                        <p className="text-sm text-slate-600 mb-3">{achievement.description}</p>
+                        <p className="text-sm text-slate-600 mb-3">
+                          Earn {item.points} points every time you {item.action.toLowerCase()}
+                        </p>
                         <div className="flex items-center justify-between">
-                          <span className="text-sm text-slate-500">{achievement.holders} holders</span>
+                          <span className="text-sm text-slate-500">Active contributors: 1,247</span>
                           <Button variant="outline" size="sm">
-                            View Holders
+                            View Leaderboard
                           </Button>
                         </div>
                       </div>
@@ -572,7 +503,7 @@ export function Leaderboard() {
           </div>
         </TabsContent>
 
-        {/* Analytics */}
+        {/* Analytics Tab */}
         <TabsContent value="analytics" className="space-y-6">
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <Card>
@@ -595,19 +526,19 @@ export function Leaderboard() {
 
             <Card>
               <CardContent className="p-6 text-center">
-                <Trophy className="h-8 w-8 text-yellow-600 mx-auto mb-3" />
-                <div className="text-2xl font-bold text-slate-900">87%</div>
-                <div className="text-sm text-slate-500">Avg Success Rate</div>
-                <div className="text-xs text-green-600 mt-1">+3% this month</div>
+                <Zap className="h-8 w-8 text-yellow-600 mx-auto mb-3" />
+                <div className="text-2xl font-bold text-slate-900">2.4M</div>
+                <div className="text-sm text-slate-500">CONNECT Distributed</div>
+                <div className="text-xs text-green-600 mt-1">+25% this month</div>
               </CardContent>
             </Card>
 
             <Card>
               <CardContent className="p-6 text-center">
-                <TrendingUp className="h-8 w-8 text-green-600 mx-auto mb-3" />
-                <div className="text-2xl font-bold text-slate-900">₹4.2Cr</div>
-                <div className="text-sm text-slate-500">Total Treasury</div>
-                <div className="text-xs text-green-600 mt-1">+15% this month</div>
+                <Star className="h-8 w-8 text-pink-600 mx-auto mb-3" />
+                <div className="text-2xl font-bold text-slate-900">1,567</div>
+                <div className="text-sm text-slate-500">NFT Badges Minted</div>
+                <div className="text-xs text-green-600 mt-1">+18% this month</div>
               </CardContent>
             </Card>
           </div>
@@ -638,6 +569,13 @@ export function Leaderboard() {
                     <span>67% (+5%)</span>
                   </div>
                   <Progress value={67} className="h-2" />
+                </div>
+                <div>
+                  <div className="flex justify-between text-sm mb-2">
+                    <span>Token Distribution</span>
+                    <span>95% (+3%)</span>
+                  </div>
+                  <Progress value={95} className="h-2" />
                 </div>
               </div>
             </CardContent>
@@ -677,7 +615,27 @@ export function Leaderboard() {
             </CardHeader>
 
             <CardContent className="space-y-6">
-              {/* Stats Grid */}
+              {/* Gamification Stats */}
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div className="text-center p-3 bg-purple-50 rounded-lg">
+                  <div className="font-bold text-purple-900">{selectedMember.connectTokens}</div>
+                  <div className="text-xs text-purple-600">CONNECT Tokens</div>
+                </div>
+                <div className="text-center p-3 bg-blue-50 rounded-lg">
+                  <div className="font-bold text-blue-900">{selectedMember.nftBadges}</div>
+                  <div className="text-xs text-blue-600">NFT Badges</div>
+                </div>
+                <div className="text-center p-3 bg-yellow-50 rounded-lg">
+                  <div className="font-bold text-yellow-900">Level {selectedMember.level}</div>
+                  <div className="text-xs text-yellow-600">Current Level</div>
+                </div>
+                <div className="text-center p-3 bg-orange-50 rounded-lg">
+                  <div className="font-bold text-orange-900">{selectedMember.streak}</div>
+                  <div className="text-xs text-orange-600">Day Streak</div>
+                </div>
+              </div>
+
+              {/* Regular Stats Grid */}
               <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                 <div className="text-center p-3 bg-slate-50 rounded-lg">
                   <div className="font-bold text-slate-900">{selectedMember.stats.proposalsCreated}</div>
@@ -713,9 +671,11 @@ export function Leaderboard() {
                     <div key={index} className="flex items-center justify-between p-3 border rounded-lg">
                       <div>
                         <div className="font-medium text-slate-900">{achievement.name}</div>
-                        <div className="text-sm text-slate-500">{achievement.date}</div>
+                        <div className="text-sm text-slate-500">
+                          {achievement.date} • +{achievement.points} points
+                        </div>
                       </div>
-                      <Badge className={getRarityColor(achievement.rarity)} variant="outline">
+                      <Badge variant="outline" className="text-xs">
                         {achievement.rarity}
                       </Badge>
                     </div>

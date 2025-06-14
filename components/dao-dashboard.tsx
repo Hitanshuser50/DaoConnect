@@ -1,12 +1,12 @@
 "use client"
 
 import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Badge } from "@/components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Progress } from "@/components/ui/progress"
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { Card } from "@/DaoConnect/components/ui/card"
+import { Button } from "@/DaoConnect/components/ui/button"
+import { Badge } from "@/DaoConnect/components/ui/badge"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/DaoConnect/components/ui/tabs"
+import { Progress } from "@/DaoConnect/components/ui/progress"
+import { Avatar, AvatarFallback, AvatarImage } from "@/DaoConnect/components/ui/avatar"
 import {
   Users,
   Vote,
@@ -26,8 +26,9 @@ import {
   Wallet,
   Trophy,
   Target,
+  Loader2,
 } from "lucide-react"
-import { ProposalCreator } from "@/components/proposal-creator"
+import { ProposalCreator } from "@/DaoConnect/components/proposal-creator"
 
 interface DAODashboardProps {
   daoId: string
@@ -227,6 +228,7 @@ const mockMembers = [
 export function DAODashboard({ daoId }: DAODashboardProps) {
   const [showProposalCreator, setShowProposalCreator] = useState(false)
   const [selectedTab, setSelectedTab] = useState("proposals")
+  const [isVoting, setIsVoting] = useState(false)
 
   const dao = indianDAOData[daoId as keyof typeof indianDAOData] || indianDAOData["1"]
 
@@ -268,6 +270,43 @@ export function DAODashboard({ daoId }: DAODashboardProps) {
         return "text-red-600 bg-red-50"
       default:
         return "text-gray-600 bg-gray-50"
+    }
+  }
+
+  const handleVote = async (proposalId: number, vote: "for" | "against") => {
+    // Mock user for now
+    const user = { id: "user123" }
+
+    if (!user) {
+      // Redirect to wallet connection
+      return
+    }
+
+    setIsVoting(true)
+    try {
+      const response = await fetch("/api/vote", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          proposalId,
+          vote,
+          userId: user.id,
+          weight: 1,
+        }),
+      })
+
+      if (!response.ok) {
+        throw new Error("Failed to submit vote")
+      }
+
+      // Refresh proposal data
+      window.location.reload() // Simple refresh for now
+    } catch (error) {
+      console.error("Error voting:", error)
+    } finally {
+      setIsVoting(false)
     }
   }
 
@@ -489,11 +528,22 @@ export function DAODashboard({ daoId }: DAODashboardProps) {
 
                   {proposal.status === "Active" && (
                     <div className="flex gap-2">
-                      <Button size="sm" variant="outline" className="text-red-600 border-red-200 hover:bg-red-50">
-                        Vote Against
+                      <Button
+                        size="sm"
+                        variant="outline"
+                        className="text-red-600 border-red-200 hover:bg-red-50"
+                        onClick={() => handleVote(proposal.id, "against")}
+                        disabled={isVoting}
+                      >
+                        {isVoting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Vote Against"}
                       </Button>
-                      <Button size="sm" className="bg-green-600 hover:bg-green-700">
-                        Vote For
+                      <Button
+                        size="sm"
+                        className="bg-green-600 hover:bg-green-700"
+                        onClick={() => handleVote(proposal.id, "for")}
+                        disabled={isVoting}
+                      >
+                        {isVoting ? <Loader2 className="h-4 w-4 animate-spin" /> : "Vote For"}
                       </Button>
                     </div>
                   )}

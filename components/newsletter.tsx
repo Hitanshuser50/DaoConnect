@@ -3,10 +3,10 @@
 import type React from "react"
 
 import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Badge } from "@/components/ui/badge"
+import { Card } from "@/DaoConnect/components/ui/card"
+import { Button } from "@/DaoConnect/components/ui/button"
+import { Input } from "@/DaoConnect/components/ui/input"
+import { Badge } from "@/DaoConnect/components/ui/badge"
 import { CheckCircle, TrendingUp, Users, Zap } from "lucide-react"
 
 export function Newsletter() {

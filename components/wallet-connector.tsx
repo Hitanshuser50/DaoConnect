@@ -1,126 +1,65 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Button } from "@/components/ui/button"
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
-import { Copy, Check, Wallet, ExternalLink } from "lucide-react"
+import { Button } from "@/DaoConnect/components/ui/button"
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/DaoConnect/components/ui/card"
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/DaoConnect/components/ui/tabs"
+import { Copy, Check, Wallet, ExternalLink, AlertTriangle, Loader2 } from "lucide-react"
+import { useWallet } from "@/DaoConnect/hooks/use-wallet"
+import { Alert, AlertDescription } from "@/DaoConnect/components/ui/alert"
+import { Badge } from "@/DaoConnect/components/ui/badge"
 
 export function WalletConnector() {
-  const [address, setAddress] = useState<string | null>(null)
-  const [connecting, setConnecting] = useState(false)
+  const {
+    wallet,
+    accounts,
+    connecting,
+    error,
+    connectWallet,
+    disconnectWallet,
+    switchAccount,
+    checkWalletAvailability,
+    updateBalance,
+  } = useWallet()
+
   const [copied, setCopied] = useState(false)
-  const [wallets, setWallets] = useState<string[]>([])
+  const [availableWallets, setAvailableWallets] = useState<Record<string, boolean>>({})
   const [activeTab, setActiveTab] = useState("polkadot")
 
-  // Detect available wallets
+  // Check available wallets on mount
   useEffect(() => {
-    const detectWallets = () => {
-      const detected = []
+    const available = checkWalletAvailability()
+    setAvailableWallets(available)
 
-      // Check for Polkadot.js extension
-      if (window.injectedWeb3 && window.injectedWeb3["polkadot-js"]) {
-        detected.push("polkadot")
-      }
-
-      // Check for MetaMask
-      if (window.ethereum) {
-        detected.push("metamask")
-      }
-
-      // Check for Talisman
-      if (window.injectedWeb3 && window.injectedWeb3.talisman) {
-        detected.push("talisman")
-      }
-
-      // Check for SubWallet
-      if (window.injectedWeb3 && window.injectedWeb3.subwallet) {
-        detected.push("subwallet")
-      }
-
-      setWallets(detected)
-
-      // Set default active tab based on available wallets
-      if (detected.length > 0 && !detected.includes(activeTab)) {
-        setActiveTab(detected[0])
-      }
+    // Set default active tab based on available wallets
+    const availableList = Object.entries(available).filter(([, isAvailable]) => isAvailable)
+    if (availableList.length > 0) {
+      setActiveTab(availableList[0][0])
     }
+  }, [checkWalletAvailability])
 
-    detectWallets()
-  }, [activeTab])
+  // Update balance periodically
+  useEffect(() => {
+    if (wallet) {
+      updateBalance()
+      const interval = setInterval(updateBalance, 30000) // Update every 30 seconds
+      return () => clearInterval(interval)
+    }
+  }, [wallet, updateBalance])
 
   // Connect to wallet
-  const connectWallet = async (walletType: string) => {
-    setConnecting(true)
-
+  const handleConnect = async (walletType: string) => {
     try {
-      let connectedAddress = ""
-
-      if (walletType === "metamask") {
-        // Connect to MetaMask
-        if (window.ethereum) {
-          const accounts = await window.ethereum.request({ method: "eth_requestAccounts" })
-          connectedAddress = accounts[0]
-
-          // Add Polkadot network if not already added
-          try {
-            await window.ethereum.request({
-              method: "wallet_addEthereumChain",
-              params: [
-                {
-                  chainId: "0x162",
-                  chainName: "Polkadot Asset Hub",
-                  nativeCurrency: {
-                    name: "DOT",
-                    symbol: "DOT",
-                    decimals: 18,
-                  },
-                  rpcUrls: ["https://polkadot-asset-hub-rpc.polkadot.io"],
-                  blockExplorerUrls: ["https://polkadot.subscan.io/"],
-                },
-              ],
-            })
-            console.log("Added Polkadot network to MetaMask")
-          } catch (error) {
-            console.log("Network may already exist or user rejected", error)
-          }
-        }
-      } else if (walletType === "polkadot" || walletType === "talisman" || walletType === "subwallet") {
-        // Connect to Polkadot.js, Talisman or SubWallet
-        if (window.injectedWeb3) {
-          const extension = window.injectedWeb3[walletType === "polkadot" ? "polkadot-js" : walletType]
-          if (extension) {
-            const injected = await extension.enable("Dao Connect")
-            const accounts = await injected.accounts.get()
-            if (accounts && accounts.length > 0) {
-              connectedAddress = accounts[0].address
-            }
-          }
-        }
-      }
-
-      if (connectedAddress) {
-        setAddress(connectedAddress)
-        console.log(`Connected to ${walletType} with address: ${connectedAddress}`)
-      } else {
-        console.error(`Failed to connect to ${walletType}`)
-      }
+      await connectWallet(walletType)
     } catch (error) {
-      console.error("Error connecting wallet:", error)
-    } finally {
-      setConnecting(false)
+      console.error("Connection failed:", error)
     }
-  }
-
-  // Disconnect wallet
-  const disconnectWallet = () => {
-    setAddress(null)
   }
 
   // Copy address to clipboard
   const copyAddress = () => {
-    if (address) {
-      navigator.clipboard.writeText(address)
+    if (wallet?.address) {
+      navigator.clipboard.writeText(wallet.address)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
     }
@@ -132,109 +71,182 @@ export function WalletConnector() {
     return `${addr.substring(0, 6)}...${addr.substring(addr.length - 4)}`
   }
 
+  // Format balance
+  const formatBalance = (balance: string) => {
+    if (!balance) return "0"
+    const bal = Number.parseFloat(balance) / 1e12 // Convert from planck to DOT
+    return bal.toFixed(4)
+  }
+
   // Get wallet icon
   const getWalletIcon = (wallet: string) => {
     switch (wallet) {
       case "polkadot":
-        return "🟣" // Polkadot icon
+        return "🟣"
       case "metamask":
-        return "🦊" // MetaMask icon
+        return "🦊"
       case "talisman":
-        return "🔮" // Talisman icon
+        return "🔮"
       case "subwallet":
-        return "🌐" // SubWallet icon
+        return "🌐"
       default:
-        return "💼" // Generic wallet icon
+        return "💼"
     }
+  }
+
+  // Get explorer URL
+  const getExplorerUrl = (address: string) => {
+    return `https://polkadot.subscan.io/account/${address}`
   }
 
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle className="text-2xl">Connect Wallet</CardTitle>
-        <CardDescription>Connect your wallet to interact with Dao Connect platform</CardDescription>
+        <CardDescription>Connect your wallet to interact with DAO Connect platform</CardDescription>
       </CardHeader>
       <CardContent>
-        {address ? (
+        {error && (
+          <Alert className="mb-4">
+            <AlertTriangle className="h-4 w-4" />
+            <AlertDescription>{error}</AlertDescription>
+          </Alert>
+        )}
+
+        {wallet ? (
           <div className="space-y-4">
-            <div className="flex items-center justify-between p-3 border rounded-lg">
+            {/* Connected wallet info */}
+            <div className="flex items-center justify-between p-3 border rounded-lg bg-green-50">
               <div className="flex items-center space-x-2">
-                <Wallet className="h-5 w-5 text-gray-500" />
-                <span className="font-mono">{formatAddress(address)}</span>
+                <Wallet className="h-5 w-5 text-green-600" />
+                <div>
+                  <div className="font-medium text-green-900">{wallet.name || "Connected"}</div>
+                  <div className="text-sm text-green-700">{formatAddress(wallet.address)}</div>
+                </div>
               </div>
-              <Button variant="ghost" size="sm" onClick={copyAddress} className="h-8 w-8 p-0">
-                {copied ? <Check className="h-4 w-4" /> : <Copy className="h-4 w-4" />}
-                <span className="sr-only">Copy address</span>
-              </Button>
+              <Badge variant="outline" className="text-green-700 border-green-300">
+                {wallet.type}
+              </Badge>
             </div>
-            <div className="flex items-center justify-between">
+
+            {/* Balance display */}
+            {wallet.balance && (
+              <div className="p-3 bg-slate-50 rounded-lg">
+                <div className="text-sm text-slate-600">Balance</div>
+                <div className="text-lg font-semibold">{formatBalance(wallet.balance)} DOT</div>
+              </div>
+            )}
+
+            {/* Account switcher */}
+            {accounts.length > 1 && (
+              <div className="space-y-2">
+                <div className="text-sm font-medium">Switch Account</div>
+                <div className="space-y-1">
+                  {accounts.slice(0, 3).map((account) => (
+                    <button
+                      key={account.address}
+                      onClick={() => switchAccount(account)}
+                      className={`w-full p-2 text-left rounded border ${
+                        account.address === wallet.address
+                          ? "border-blue-500 bg-blue-50"
+                          : "border-gray-200 hover:bg-gray-50"
+                      }`}
+                    >
+                      <div className="font-medium">{account.meta.name}</div>
+                      <div className="text-sm text-gray-500">{formatAddress(account.address)}</div>
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="flex items-center justify-between space-x-2">
+              <Button variant="ghost" size="sm" onClick={copyAddress} className="flex-1">
+                {copied ? <Check className="h-4 w-4 mr-1" /> : <Copy className="h-4 w-4 mr-1" />}
+                Copy Address
+              </Button>
               <Button
                 variant="outline"
                 size="sm"
-                className="text-xs"
-                onClick={() => window.open(`https://polkadot.subscan.io/account/${address}`, "_blank")}
+                onClick={() => window.open(getExplorerUrl(wallet.address), "_blank")}
+                className="flex-1"
               >
-                <ExternalLink className="h-3 w-3 mr-1" />
-                View on Explorer
-              </Button>
-              <Button variant="destructive" size="sm" onClick={disconnectWallet}>
-                Disconnect
+                <ExternalLink className="h-4 w-4 mr-1" />
+                Explorer
               </Button>
             </div>
+
+            <Button variant="destructive" size="sm" onClick={disconnectWallet} className="w-full">
+              Disconnect
+            </Button>
           </div>
         ) : (
-          <Tabs defaultValue={activeTab} onValueChange={setActiveTab}>
-            <TabsList className="grid grid-cols-4 mb-4">
-              {["polkadot", "metamask", "talisman", "subwallet"].map((wallet) => (
-                <TabsTrigger key={wallet} value={wallet} disabled={!wallets.includes(wallet)} className="capitalize">
+          <Tabs value={activeTab} onValueChange={setActiveTab}>
+            <TabsList className="grid grid-cols-2 mb-4">
+              {["polkadot", "talisman"].map((wallet) => (
+                <TabsTrigger
+                  key={wallet}
+                  value={wallet}
+                  disabled={!availableWallets[wallet]}
+                  className="capitalize text-xs"
+                >
                   {getWalletIcon(wallet)} {wallet === "polkadot" ? "Polkadot.js" : wallet}
                 </TabsTrigger>
               ))}
             </TabsList>
-            {["polkadot", "metamask", "talisman", "subwallet"].map((wallet) => (
-              <TabsContent key={wallet} value={wallet} className="space-y-4">
+
+            {["polkadot", "metamask", "talisman", "subwallet"].map((walletType) => (
+              <TabsContent key={walletType} value={walletType} className="space-y-4">
                 <div className="text-center py-4">
-                  <div className="text-4xl mb-2">{getWalletIcon(wallet)}</div>
+                  <div className="text-4xl mb-2">{getWalletIcon(walletType)}</div>
                   <h3 className="text-lg font-medium capitalize mb-1">
-                    {wallet === "polkadot" ? "Polkadot.js" : wallet}
+                    {walletType === "polkadot" ? "Polkadot.js" : walletType}
                   </h3>
-                  {wallets.includes(wallet) ? (
+                  {availableWallets[walletType] ? (
                     <p className="text-sm text-gray-500 mb-4">
-                      {wallet === "polkadot"
+                      {walletType === "polkadot"
                         ? "Connect to the Polkadot ecosystem"
-                        : wallet === "metamask"
+                        : walletType === "metamask"
                           ? "Connect to EVM-compatible parachains"
-                          : wallet === "talisman"
+                          : walletType === "talisman"
                             ? "The wallet built for Polkadot & Kusama"
                             : "The comprehensive wallet for Substrate"}
                     </p>
                   ) : (
                     <p className="text-sm text-red-500 mb-4">
-                      {wallet === "polkadot"
+                      {walletType === "polkadot"
                         ? "Polkadot.js extension not detected"
-                        : wallet === "metamask"
+                        : walletType === "metamask"
                           ? "MetaMask extension not detected"
-                          : wallet === "talisman"
+                          : walletType === "talisman"
                             ? "Talisman extension not detected"
                             : "SubWallet extension not detected"}
                     </p>
                   )}
                   <Button
-                    onClick={() => connectWallet(wallet)}
-                    disabled={connecting || !wallets.includes(wallet)}
+                    onClick={() => handleConnect(walletType)}
+                    disabled={connecting || !availableWallets[walletType]}
                     className="w-full"
                   >
-                    {connecting ? "Connecting..." : `Connect to ${wallet === "polkadot" ? "Polkadot.js" : wallet}`}
+                    {connecting ? (
+                      <>
+                        <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+                        Connecting...
+                      </>
+                    ) : (
+                      `Connect ${walletType === "polkadot" ? "Polkadot.js" : walletType}`
+                    )}
                   </Button>
-                  {!wallets.includes(wallet) && (
+                  {!availableWallets[walletType] && (
                     <div className="mt-2">
                       <a
                         href={
-                          wallet === "polkadot"
+                          walletType === "polkadot"
                             ? "https://polkadot.js.org/extension/"
-                            : wallet === "metamask"
+                            : walletType === "metamask"
                               ? "https://metamask.io/download/"
-                              : wallet === "talisman"
+                              : walletType === "talisman"
                                 ? "https://talisman.xyz/download"
                                 : "https://subwallet.app/download.html"
                         }
@@ -242,7 +254,7 @@ export function WalletConnector() {
                         rel="noopener noreferrer"
                         className="text-xs text-blue-500 hover:underline"
                       >
-                        Install {wallet === "polkadot" ? "Polkadot.js" : wallet}
+                        Install {walletType === "polkadot" ? "Polkadot.js" : walletType}
                       </a>
                     </div>
                   )}
