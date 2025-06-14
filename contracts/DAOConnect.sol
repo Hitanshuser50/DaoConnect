@@ -27,10 +27,15 @@ contract DAOConnect {
         emit AmountRequiredUpdated(_amt);
     }
 
-    function createDAO(string memory _name) external payable {
+    function createDAO(
+        string memory _name,
+        string memory _description,
+        string memory _nftSupply,
+        string memory _uri
+    ) external payable {
         require(msg.value >= amountRequired, "Insufficient funds provided to create DAO");
 
-        DAO dao = new Dao(_name, msg.sender);
+        DAO dao = new DAO(_name, _description, _nftSupply, _uri, msg.sender);
         daos.push(address(dao));
         daoCount++;
 
