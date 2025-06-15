@@ -5,122 +5,156 @@ import { ethers } from 'ethers';
 
 // Contract ABI for DAOConnect
 const DAO_CONNECT_ABI =[
-{
-"inputs": [
-{
-"internalType": "uint256",
-"name": "_amountRequired",
-"type": "uint256"
-}
-],
-"stateMutability": "nonpayable",
-"type": "constructor"
-},
-{
-"anonymous": false,
-"inputs": [
-{
-"indexed": false,
-"internalType": "uint256",
-"name": "newAmount",
-"type": "uint256"
-}
-],
-"name": "AmountRequiredUpdated",
-"type": "event"
-},
-{
-"anonymous": false,
-"inputs": [
-{
-"indexed": true,
-"internalType": "address",
-"name": "daoAddress",
-"type": "address"
-},
-{
-"indexed": false,
-"internalType": "string",
-"name": "name",
-"type": "string"
-},
-{
-"indexed": false,
-"internalType": "address",
-"name": "creator",
-"type": "address"
-}
-],
-"name": "DAOCreated",
-"type": "event"
-},
-{
-"inputs": [],
-"name": "amountRequired",
-"outputs": [
-{
-"internalType": "uint256",
-"name": "",
-"type": "uint256"
-}
-],
-"stateMutability": "view",
-"type": "function"
-},
-{
-"inputs": [
-{
-"internalType": "string",
-"name": "_name",
-"type": "string"
-},
-{
-"internalType": "string",
-"name": "_description",
-"type": "string"
-},
-{
-"internalType": "string",
-"name": "_nftSupply",
-"type": "string"
-},
-{
-"internalType": "string",
-"name": "_uri",
-"type": "string"
-}
-],
-"name": "createDAO",
-"outputs": [],
-"stateMutability": "payable",
-"type": "function"
-},
-{
-"inputs": [],
-"name": "daoCount",
-"outputs": [
-{
-"internalType": "uint256",
-"name": "",
-"type": "uint256"
-}
-],
-"stateMutability": "view",
-"type": "function"
-},
-{
-"inputs": [],
-"name": "getAllDAOs",
-"outputs": [
-{
-"internalType": "address[]",
-"name": "",
-"type": "address[]"
-}
-],
-"stateMutability": "view",
-"type": "function"
-}
+	{
+		"inputs": [],
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": false,
+				"internalType": "uint256",
+				"name": "newAmount",
+				"type": "uint256"
+			}
+		],
+		"name": "AmountRequiredUpdated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "string",
+				"name": "_name",
+				"type": "string"
+			},
+			{
+				"internalType": "string",
+				"name": "_description",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "_nftSupply",
+				"type": "uint256"
+			}
+		],
+		"name": "createDAO",
+		"outputs": [],
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"internalType": "address",
+				"name": "daoAddress",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"internalType": "string",
+				"name": "name",
+				"type": "string"
+			},
+			{
+				"indexed": false,
+				"internalType": "address",
+				"name": "creator",
+				"type": "address"
+			}
+		],
+		"name": "DAOCreated",
+		"type": "event"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "_amt",
+				"type": "uint256"
+			}
+		],
+		"name": "setAmountRequiredToCreateDao",
+		"outputs": [],
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "amountRequired",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "daoCount",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "daos",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "factoryOwner",
+		"outputs": [
+			{
+				"internalType": "address",
+				"name": "",
+				"type": "address"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"inputs": [],
+		"name": "getAllDAOs",
+		"outputs": [
+			{
+				"internalType": "address[]",
+				"name": "",
+				"type": "address[]"
+			}
+		],
+		"stateMutability": "view",
+		"type": "function"
+	}
 ];
 
 interface DAOFormData {
@@ -182,6 +216,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const loadContractData = async (contractInstance: ethers.Contract) => {
     try {
      const daos = await contractInstance.getAllDAOs();
+     const ownerAddress = await contractInstance.factoryOwner();
     const required = 0; // Since amountRequired is not defined in the contract
     const count = daos.length;
 
@@ -217,7 +252,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
 
     setLoading(true);
     try {
-      const daos = await contract.getAllDAOs();
+      const daos = await contract.getAllDAOs;
       const required = 0; // Since amountRequired is not defined in the contract
       const count = daos.length;
       const tx = await contract.createDAO(
@@ -276,7 +311,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         ) : (
           <div className="bg-green-100 p-4 rounded-lg">
             <p className="text-green-800">
-              Connected: {account.slice(0, 6)}...{account.slice(-4)}
+               { `Contract Address: ${contractAddress.slice(0, 6)}...${contractAddress.slice(-4)}` }
             </p>
           </div>
         )}
@@ -297,9 +332,9 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                 <p className="text-lg font-bold text-gray-800">{daoCount}</p>
               </div>
               <div>
-                <p className="text-sm text-gray-600">Contract Address</p>
+                <p className="text-sm text-gray-600">Owner Address</p>
                 <p className="text-sm font-mono text-gray-800">
-                  {contractAddress.slice(0, 6)}...{contractAddress.slice(-4)}
+                  {ownerAddress ? `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}` : 'Not connected'}
                 </p>
               </div>
             </div>
