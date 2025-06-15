@@ -177,6 +177,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const [amountRequired, setAmountRequired] = useState<string>('0');
   const [daoCount, setDaoCount] = useState<number>(0);
   const [allDAOs, setAllDAOs] = useState<string[]>([]);
+  const [ownerAddress, setOwnerAddress] = useState<string>('');
   const [formData, setFormData] = useState<DAOFormData>({
     name: '',
     description: '',
@@ -212,14 +213,16 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
 
   // Load contract data
   const loadContractData = async (contractInstance: ethers.Contract) => {
-    try {
+     try {
      const daos = await contractInstance.getAllDAOs();
-     const ownerAddress = await contractInstance.factoryOwner();
-    const required = 0; // Since amountRequired is not defined in the contract
-    const count = daos.length;
+     const owner = await contractInstance.factoryOwner();
+     const required = 0; // Since amountRequired is not defined in the contract
+     const count = daos.length;
 
       setAmountRequired(ethers.formatEther(required));
       setDaoCount(Number(count));
+      setAllDAOs(daos);
+      setOwnerAddress(owner);
       setAllDAOs(daos);
     } catch (error) {
       console.error('Error loading contract data:', error);
