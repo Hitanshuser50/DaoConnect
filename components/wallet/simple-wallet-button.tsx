@@ -1,4 +1,4 @@
-"use client"
+'use client';
 
 import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
@@ -114,9 +114,9 @@ export function SimpleWalletButton() {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="gap-2">
           <Wallet className="h-4 w-4" />
-          { isClient && (<span className="hidden sm:inline">
+          <span className="hidden sm:inline">
             {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Connect Wallet'}
-            </span>)}
+          </span>
           {chainId && (
             <Badge variant="secondary" className="hidden md:inline-flex">
               {getChainName(chainId)}
