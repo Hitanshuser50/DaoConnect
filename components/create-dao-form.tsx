@@ -1,160 +1,160 @@
-"use client"
+"use client";
 
-import React, { useState, useEffect } from 'react';
-import { ethers } from 'ethers';
+import React, { useState, useEffect } from "react";
+import { ethers } from "ethers";
 
 // Contract ABI for DAOConnect
 const DAO_CONNECT_ABI = [
   {
-    "inputs": [],
-    "stateMutability": "nonpayable",
-    "type": "constructor"
+    inputs: [],
+    stateMutability: "nonpayable",
+    type: "constructor",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": false,
-        "internalType": "uint256",
-        "name": "newAmount",
-        "type": "uint256"
-      }
+        indexed: false,
+        internalType: "uint256",
+        name: "newAmount",
+        type: "uint256",
+      },
     ],
-    "name": "AmountRequiredUpdated",
-    "type": "event"
+    name: "AmountRequiredUpdated",
+    type: "event",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "string",
-        "name": "_name",
-        "type": "string"
+        internalType: "string",
+        name: "_name",
+        type: "string",
       },
       {
-        "internalType": "string",
-        "name": "_description",
-        "type": "string"
+        internalType: "string",
+        name: "_description",
+        type: "string",
       },
       {
-        "internalType": "uint256",
-        "name": "_nftSupply",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "_nftSupply",
+        type: "uint256",
+      },
     ],
-    "name": "createDAO",
-    "outputs": [],
-    "stateMutability": "payable",
-    "type": "function"
+    name: "createDAO",
+    outputs: [],
+    stateMutability: "payable",
+    type: "function",
   },
   {
-    "anonymous": false,
-    "inputs": [
+    anonymous: false,
+    inputs: [
       {
-        "indexed": true,
-        "internalType": "address",
-        "name": "daoAddress",
-        "type": "address"
+        indexed: true,
+        internalType: "address",
+        name: "daoAddress",
+        type: "address",
       },
       {
-        "indexed": false,
-        "internalType": "string",
-        "name": "name",
-        "type": "string"
+        indexed: false,
+        internalType: "string",
+        name: "name",
+        type: "string",
       },
       {
-        "indexed": false,
-        "internalType": "address",
-        "name": "creator",
-        "type": "address"
-      }
+        indexed: false,
+        internalType: "address",
+        name: "creator",
+        type: "address",
+      },
     ],
-    "name": "DAOCreated",
-    "type": "event"
+    name: "DAOCreated",
+    type: "event",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "_amt",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "_amt",
+        type: "uint256",
+      },
     ],
-    "name": "setAmountRequiredToCreateDao",
-    "outputs": [],
-    "stateMutability": "nonpayable",
-    "type": "function"
+    name: "setAmountRequiredToCreateDao",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "amountRequired",
-    "outputs": [
+    inputs: [],
+    name: "amountRequired",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "daoCount",
-    "outputs": [
+    inputs: [],
+    name: "daoCount",
+    outputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [
+    inputs: [
       {
-        "internalType": "uint256",
-        "name": "",
-        "type": "uint256"
-      }
+        internalType: "uint256",
+        name: "",
+        type: "uint256",
+      },
     ],
-    "name": "daos",
-    "outputs": [
+    name: "daos",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "factoryOwner",
-    "outputs": [
+    inputs: [],
+    name: "factoryOwner",
+    outputs: [
       {
-        "internalType": "address",
-        "name": "",
-        "type": "address"
-      }
+        internalType: "address",
+        name: "",
+        type: "address",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
+    stateMutability: "view",
+    type: "function",
   },
   {
-    "inputs": [],
-    "name": "getAllDAOs",
-    "outputs": [
+    inputs: [],
+    name: "getAllDAOs",
+    outputs: [
       {
-        "internalType": "address[]",
-        "name": "",
-        "type": "address[]"
-      }
+        internalType: "address[]",
+        name: "",
+        type: "address[]",
+      },
     ],
-    "stateMutability": "view",
-    "type": "function"
-  }
+    stateMutability: "view",
+    type: "function",
+  },
 ];
 
 interface DAOFormData {
@@ -171,27 +171,31 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
-  const [account, setAccount] = useState<string>('');
-  const [owner, setOwner] = useState<string>('');
+  const [account, setAccount] = useState<string>("");
+  const [ownerAddress, setOwnerAddress] = useState<string>("");
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
-  const [amountRequired, setAmountRequired] = useState<string>('0');
+  const [amountRequired, setAmountRequired] = useState<string>("0");
   const [daoCount, setDaoCount] = useState<number>(0);
   const [allDAOs, setAllDAOs] = useState<string[]>([]);
   const [formData, setFormData] = useState<DAOFormData>({
-    name: '',
-    description: '',
-    nftSupply: '',
+    name: "",
+    description: "",
+    nftSupply: "",
   });
 
   // Connect to MetaMask
   const connectWallet = async () => {
     try {
-      if (typeof window.ethereum !== 'undefined') {
+      if (typeof window.ethereum !== "undefined") {
         const provider = new ethers.BrowserProvider(window.ethereum);
-        const accounts = await provider.send('eth_requestAccounts', []);
+        const accounts = await provider.send("eth_requestAccounts", []);
         const signer = await provider.getSigner();
-        const contract = new ethers.Contract(contractAddress, DAO_CONNECT_ABI, signer);
+        const contract = new ethers.Contract(
+          contractAddress,
+          DAO_CONNECT_ABI,
+          signer,
+        );
 
         console.log(contract);
         setProvider(provider);
@@ -203,11 +207,11 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         // Load contract data
         await loadContractData(contract);
       } else {
-        alert('Please install MetaMask!');
+        alert("Please install MetaMask!");
       }
     } catch (error) {
-      console.error('Error connecting wallet:', error);
-      alert('Error connecting wallet. Please try again.');
+      console.error("Error connecting wallet:", error);
+      alert("Error connecting wallet. Please try again.");
     }
   };
 
@@ -215,26 +219,28 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const loadContractData = async (contractInstance: ethers.Contract) => {
     try {
       const daos = await contractInstance.getAllDAOs();
-      const ownerAddress = await contractInstance.factoryOwner();
-      const required = 0; // Since amountRequired is not defined in the contract
+      const owner = await contractInstance.factoryOwner();
+      const required = await contractInstance.amountRequired();
       const count = daos.length;
 
-
       setAmountRequired(ethers.formatEther(required));
+      console.log(required);
       setDaoCount(Number(count));
       setAllDAOs(daos);
-      setOwner(owner)
+      setOwnerAddress(owner);
     } catch (error) {
-      console.error('Error loading contract data:', error);
+      console.error("Error loading contract data:", error);
     }
   };
 
   // Handle form input changes
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+  const handleInputChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
     const { name, value } = e.target;
-    setFormData(prev => ({
+    setFormData((prev) => ({
       ...prev,
-      [name]: value
+      [name]: value,
     }));
   };
 
@@ -242,12 +248,12 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const createDAO = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!contract || !signer) {
-      alert('Please connect your wallet first!');
+      alert("Please connect your wallet first!");
       return;
     }
 
     if (!formData.name || !formData.description || !formData.nftSupply) {
-      alert('Please fill in all fields!');
+      alert("Please fill in all fields!");
       return;
     }
 
@@ -258,26 +264,26 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         formData.name,
         formData.description,
         formData.nftSupply,
-        { value: amountRequired }
+        { value: amountRequired },
       );
 
-      console.log('Transaction sent:', tx.hash);
+      console.log("Transaction sent:", tx.hash);
       await tx.wait();
 
-      alert('DAO created successfully!');
+      alert("DAO created successfully!");
 
       // Reset form
       setFormData({
-        name: '',
-        description: '',
-        nftSupply: '',
+        name: "",
+        description: "",
+        nftSupply: "",
       });
 
       // Reload contract data
       await loadContractData(contract);
     } catch (error) {
-      console.error('Error creating DAO:', error);
-      alert('Error creating DAO. Please check console for details.');
+      console.error("Error creating DAO:", error);
+      alert("Error creating DAO. Please check console for details.");
     } finally {
       setLoading(false);
     }
@@ -318,11 +324,15 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         <>
           {/* Contract Information */}
           <div className="mb-8 bg-gray-100 p-4 rounded-lg">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Contract Information</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+              Contract Information
+            </h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
                 <p className="text-sm text-gray-600">Amount Required</p>
-                <p className="text-lg font-bold text-gray-800">{amountRequired} ETH</p>
+                <p className="text-lg font-bold text-gray-800">
+                  {amountRequired} ETH
+                </p>
               </div>
               <div>
                 <p className="text-sm text-gray-600">DAO Count</p>
@@ -331,7 +341,9 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
               <div>
                 <p className="text-sm text-gray-600">Owner Address</p>
                 <p className="text-sm font-mono text-gray-800">
-                  {owner ? `${owner.slice(0, 6)}...${owner.slice(-4)}` : 'Not connected'}
+                  {ownerAddress
+                    ? `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}`
+                    : "Not connected"}
                 </p>
               </div>
             </div>
@@ -339,7 +351,9 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
 
           {/* Create DAO Form */}
           <div className="mb-8">
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">Create New DAO</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+              Create New DAO
+            </h2>
             <form onSubmit={createDAO} className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -391,14 +405,18 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                 disabled={loading}
                 className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200"
               >
-                {loading ? 'Creating DAO...' : `Create DAO (${amountRequired} ETH)`}
+                {loading
+                  ? "Creating DAO..."
+                  : `Create DAO (${amountRequired} ETH)`}
               </button>
             </form>
           </div>
 
           {/* List of DAOs */}
           <div>
-            <h2 className="text-xl font-semibold mb-4 text-gray-800">All DAOs</h2>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">
+              All DAOs
+            </h2>
             {allDAOs.length === 0 ? (
               <p className="text-gray-600">No DAOs created yet.</p>
             ) : (
