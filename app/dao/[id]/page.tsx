@@ -1,15 +1,20 @@
-import { DAODashboard } from "@/components/dao-dashboard"
+// /app/dao/[contract]/page.tsx
 
-interface DAOPageProps {
+interface DaoPageProps {
   params: {
-    id: string
-  }
+    contract: string;
+  };
 }
 
-export default function DAOPage({ params }: DAOPageProps) {
+export default function DaoPage({ params }: DaoPageProps) {
+  const { contract } = params;
+
   return (
-    <div className="min-h-screen bg-slate-50">
-      <DAODashboard daoId={params.id} />
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-4">Hello World</h1>
+      <p className="text-gray-600">
+        DAO Contract Address: <span className="font-mono">{contract}</span>
+      </p>
     </div>
-  )
+  );
 }

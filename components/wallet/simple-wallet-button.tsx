@@ -67,12 +67,7 @@ export function SimpleWalletButton() {
     if (address && chainId) {
       const explorerUrls: Record<number, string> = {
         1: "https://etherscan.io",
-        137: "https://polygonscan.com",
-        56: "https://bscscan.com",
-        43114: "https://snowtrace.io",
-        250: "https://ftmscan.com",
-        42161: "https://arbiscan.io",
-        10: "https://optimistic.etherscan.io",
+        420420421: "https://blockscout-asset-hub.parity-chains-scw.parity.io"
       }
       const explorerUrl = explorerUrls[chainId] || "https://etherscan.io"
       window.open(`${explorerUrl}/address/${address}`, "_blank")
