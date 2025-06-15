@@ -1,20 +1,17 @@
-// Complete Polkadot Blockchain Integration
+// Complete Polkadot Blockchain Integration - Updated for your config
 import { ApiPromise, WsProvider } from "@polkadot/api"
 import { web3Accounts, web3Enable, web3FromSource } from "@polkadot/extension-dapp"
 import type { InjectedAccountWithMeta } from "@polkadot/extension-inject/types"
+import { ENV } from "../environment"
+import { POLKADOT_UTILS } from "../polkadot-config"
 
-// Real Polkadot RPC endpoints
+// Your RPC endpoints
 export const RPC_ENDPOINTS = {
-  polkadot: "wss://rpc.polkadot.io",
+  polkadot: ENV.NEXT_PUBLIC_POLKADOT_RPC_URL,
+  assetHub: ENV.NEXT_PUBLIC_ASSET_HUB_RPC_URL,
   kusama: "wss://kusama-rpc.polkadot.io",
   westend: "wss://westend-rpc.polkadot.io",
-  rococo: "wss://rococo-rpc.polkadot.io",
-  // Parachains
-  moonbeam: "wss://wss.api.moonbeam.network",
-  astar: "wss://rpc.astar.network",
-  acala: "wss://acala-rpc-0.aca-api.network",
-  parallel: "wss://rpc.parallel.fi",
-}
+} as const
 
 export interface BlockchainVote {
   proposalId: string
@@ -55,56 +52,77 @@ class PolkadotService {
         await this.provider.disconnect()
       }
 
-      console.log(`Connecting to ${endpoint}...`)
+      console.log(`🔗 Connecting to Polkadot: ${endpoint}...`)
       this.currentEndpoint = endpoint
       this.provider = new WsProvider(endpoint)
 
       this.api = await ApiPromise.create({
         provider: this.provider,
         types: {
-          // Add custom types if needed for specific parachains
+          // Polkadot-specific types
+          Balance: "u128",
+          AccountId: "AccountId32",
+          Address: "MultiAddress",
+          LookupSource: "MultiAddress",
         },
       })
 
       await this.api.isReady
-      console.log(`Connected to ${endpoint}`)
+      console.log(`✅ Connected to Polkadot successfully!`)
+
+      // Log chain info
+      const [chain, nodeName, nodeVersion] = await Promise.all([
+        this.api.rpc.system.chain(),
+        this.api.rpc.system.name(),
+        this.api.rpc.system.version(),
+      ])
+
+      console.log(`📊 Chain: ${chain}, Node: ${nodeName} v${nodeVersion}`)
 
       return this.api
     } catch (error) {
-      console.error("Failed to connect to blockchain:", error)
+      console.error("❌ Failed to connect to Polkadot:", error)
       throw new Error(`Failed to connect to ${endpoint}`)
     }
   }
 
   async enableWalletAccess(): Promise<InjectedAccountWithMeta[]> {
     try {
+      console.log("🔐 Enabling Polkadot wallet access...")
+
       // Enable wallet extensions
-      const extensions = await web3Enable("DAO Connect")
+      const extensions = await web3Enable("DAO Connect - Polkadot")
       if (extensions.length === 0) {
-        throw new Error("No wallet extension found")
+        throw new Error("No Polkadot wallet extension found. Please install Polkadot.js, Talisman, or SubWallet.")
       }
+
+      console.log(`✅ Found ${extensions.length} wallet extension(s)`)
 
       // Get accounts
       this.accounts = await web3Accounts()
       if (this.accounts.length === 0) {
-        throw new Error("No accounts found in wallet")
+        throw new Error("No accounts found in wallet. Please create or import accounts.")
       }
 
+      console.log(`👛 Found ${this.accounts.length} account(s)`)
       return this.accounts
     } catch (error) {
-      console.error("Error enabling wallet access:", error)
+      console.error("❌ Error enabling wallet access:", error)
       throw error
     }
   }
 
   async getAccountBalance(address: string): Promise<string> {
-    if (!this.api) throw new Error("Not connected to blockchain")
+    if (!this.api) throw new Error("Not connected to Polkadot")
 
     try {
       const { data: balance } = await this.api.query.system.account(address)
-      return balance.free.toString()
+      const freeBalance = balance.free.toString()
+
+      console.log(`💰 Balance for ${address}: ${POLKADOT_UTILS.formatDot(BigInt(freeBalance))}`)
+      return freeBalance
     } catch (error) {
-      console.error("Error getting balance:", error)
+      console.error("❌ Error getting balance:", error)
       return "0"
     }
   }
@@ -117,29 +135,34 @@ class PolkadotService {
       deposit: string
     },
   ): Promise<string> {
-    if (!this.api) throw new Error("Not connected to blockchain")
+    if (!this.api) throw new Error("Not connected to Polkadot")
 
     try {
+      console.log("📝 Submitting referendum to Polkadot...")
       const injector = await web3FromSource(account.meta.source)
 
-      // Create a referendum proposal
+      // Create a referendum proposal with metadata
       const proposalCall = this.api.tx.system.remark(
         JSON.stringify({
           title: proposal.title,
           description: proposal.description,
-          platform: "dao-connect",
+          platform: "dao-connect-polkadot",
+          timestamp: Date.now(),
+          version: "1.0",
         }),
       )
 
       // Submit as democracy proposal
-      const tx = this.api.tx.democracy.propose(proposalCall, proposal.deposit)
+      const depositAmount = POLKADOT_UTILS.dotToPlanck(Number.parseFloat(proposal.deposit))
+      const tx = this.api.tx.democracy.propose(proposalCall, depositAmount.toString())
 
       const hash = await tx.signAndSend(account.address, { signer: injector.signer })
 
+      console.log(`✅ Referendum submitted! Hash: ${hash.toString()}`)
       return hash.toString()
     } catch (error) {
-      console.error("Error submitting referendum:", error)
-      throw new Error("Failed to submit referendum")
+      console.error("❌ Error submitting referendum:", error)
+      throw new Error("Failed to submit referendum to Polkadot")
     }
   }
 
@@ -150,12 +173,13 @@ class PolkadotService {
     amount: string,
     conviction = 1,
   ): Promise<string> {
-    if (!this.api) throw new Error("Not connected to blockchain")
+    if (!this.api) throw new Error("Not connected to Polkadot")
 
     try {
+      console.log(`🗳️ Voting ${vote} on referendum #${referendumIndex}...`)
       const injector = await web3FromSource(account.meta.source)
 
-      // Create vote object
+      // Create vote object for Polkadot
       const voteObj = {
         Standard: {
           vote: {
@@ -167,20 +191,21 @@ class PolkadotService {
       }
 
       const tx = this.api.tx.democracy.vote(referendumIndex, voteObj)
-
       const hash = await tx.signAndSend(account.address, { signer: injector.signer })
 
+      console.log(`✅ Vote submitted! Hash: ${hash.toString()}`)
       return hash.toString()
     } catch (error) {
-      console.error("Error voting on referendum:", error)
-      throw new Error("Failed to submit vote")
+      console.error("❌ Error voting on referendum:", error)
+      throw new Error("Failed to submit vote to Polkadot")
     }
   }
 
   async getReferendums(): Promise<ProposalOnChain[]> {
-    if (!this.api) throw new Error("Not connected to blockchain")
+    if (!this.api) throw new Error("Not connected to Polkadot")
 
     try {
+      console.log("📊 Fetching Polkadot referendums...")
       const referendums = await this.api.query.democracy.referendumInfoOf.entries()
       const proposals: ProposalOnChain[] = []
 
@@ -193,9 +218,9 @@ class PolkadotService {
           proposals.push({
             id: referendumIndex,
             proposer: ongoing.proposalHash.toString(),
-            deposit: ongoing.deposit.toString(),
-            title: `Referendum #${referendumIndex}`,
-            description: "On-chain referendum",
+            deposit: ongoing.deposit?.toString() || "0",
+            title: `Polkadot Referendum #${referendumIndex}`,
+            description: "On-chain Polkadot referendum",
             votingEnd: ongoing.end.toNumber(),
             status: "Active",
             ayes: ongoing.tally.ayes.toString(),
@@ -205,79 +230,11 @@ class PolkadotService {
         }
       }
 
+      console.log(`📋 Found ${proposals.length} active referendums`)
       return proposals
     } catch (error) {
-      console.error("Error fetching referendums:", error)
+      console.error("❌ Error fetching referendums:", error)
       return []
-    }
-  }
-
-  async getVotingHistory(address: string): Promise<BlockchainVote[]> {
-    if (!this.api) throw new Error("Not connected to blockchain")
-
-    try {
-      // Get voting history from democracy module
-      const votes = await this.api.query.democracy.votingOf(address)
-      const history: BlockchainVote[] = []
-
-      if (votes.isDirect) {
-        const direct = votes.asDirect
-        direct.votes.forEach(([referendumIndex, accountVote]) => {
-          history.push({
-            proposalId: referendumIndex.toString(),
-            voter: address,
-            vote: accountVote.isStandard && accountVote.asStandard.vote.isAye ? "aye" : "nay",
-            amount: accountVote.isStandard ? accountVote.asStandard.balance.toString() : "0",
-            conviction: accountVote.isStandard ? accountVote.asStandard.vote.conviction.toNumber() : 0,
-            blockNumber: 0, // Would need to track from events
-            txHash: "", // Would need to track from events
-          })
-        })
-      }
-
-      return history
-    } catch (error) {
-      console.error("Error getting voting history:", error)
-      return []
-    }
-  }
-
-  async createDAO(
-    account: InjectedAccountWithMeta,
-    daoConfig: {
-      name: string
-      description: string
-      initialDeposit: string
-      governance: {
-        votingPeriod: number
-        quorum: number
-        threshold: number
-      }
-    },
-  ): Promise<string> {
-    if (!this.api) throw new Error("Not connected to blockchain")
-
-    try {
-      const injector = await web3FromSource(account.meta.source)
-
-      // Create DAO as a multisig account with governance rules
-      const daoData = {
-        name: daoConfig.name,
-        description: daoConfig.description,
-        governance: daoConfig.governance,
-        created: Date.now(),
-        founder: account.address,
-      }
-
-      // Store DAO metadata on-chain
-      const tx = this.api.tx.system.remark(JSON.stringify({ type: "dao-creation", data: daoData }))
-
-      const hash = await tx.signAndSend(account.address, { signer: injector.signer })
-
-      return hash.toString()
-    } catch (error) {
-      console.error("Error creating DAO:", error)
-      throw new Error("Failed to create DAO on-chain")
     }
   }
 
@@ -287,24 +244,25 @@ class PolkadotService {
     amount: string,
     memo?: string,
   ): Promise<string> {
-    if (!this.api) throw new Error("Not connected to blockchain")
+    if (!this.api) throw new Error("Not connected to Polkadot")
 
     try {
+      console.log(`💸 Transferring ${POLKADOT_UTILS.formatDot(BigInt(amount))} to ${recipient}...`)
       const injector = await web3FromSource(account.meta.source)
 
       const tx = this.api.tx.balances.transfer(recipient, amount)
-
       const hash = await tx.signAndSend(account.address, { signer: injector.signer })
 
+      console.log(`✅ Transfer completed! Hash: ${hash.toString()}`)
       return hash.toString()
     } catch (error) {
-      console.error("Error transferring funds:", error)
-      throw new Error("Failed to transfer funds")
+      console.error("❌ Error transferring funds:", error)
+      throw new Error("Failed to transfer DOT")
     }
   }
 
   async getChainInfo() {
-    if (!this.api) throw new Error("Not connected to blockchain")
+    if (!this.api) throw new Error("Not connected to Polkadot")
 
     try {
       const [chain, nodeName, nodeVersion, blockNumber] = await Promise.all([
@@ -314,32 +272,41 @@ class PolkadotService {
         this.api.derive.chain.bestNumber(),
       ])
 
-      return {
+      const info = {
         chain: chain.toString(),
         nodeName: nodeName.toString(),
         nodeVersion: nodeVersion.toString(),
         blockNumber: blockNumber.toNumber(),
+        rpcEndpoint: this.currentEndpoint,
       }
+
+      console.log("ℹ️ Polkadot Chain Info:", info)
+      return info
     } catch (error) {
-      console.error("Error getting chain info:", error)
+      console.error("❌ Error getting chain info:", error)
       throw error
     }
   }
 
   async subscribeToNewBlocks(callback: (blockNumber: number) => void) {
-    if (!this.api) throw new Error("Not connected to blockchain")
+    if (!this.api) throw new Error("Not connected to Polkadot")
 
+    console.log("🔄 Subscribing to new Polkadot blocks...")
     return this.api.derive.chain.subscribeNewHeads((header) => {
-      callback(header.number.toNumber())
+      const blockNumber = header.number.toNumber()
+      console.log(`🆕 New Polkadot block: #${blockNumber}`)
+      callback(blockNumber)
     })
   }
 
   disconnect() {
+    console.log("🔌 Disconnecting from Polkadot...")
     if (this.provider) {
       this.provider.disconnect()
       this.provider = null
     }
     this.api = null
+    console.log("✅ Disconnected from Polkadot")
   }
 }
 

@@ -1,646 +1,258 @@
-# 🌐 Dao Connect - Revolutionary Polkadot DAO Platform
-
-[![Polkadot](https://img.shields.io/badge/Built%20for-Polkadot-E6007A?style=for-the-badge&logo=polkadot)](https://polkadot.network/)
-[![Hackathon](https://img.shields.io/badge/Polkadot-Full%20LogoAssetHub%20Hackathon-FF69B4?style=for-the-badge)](https://polkadot.network/hackathon)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-
-> **Empowering the Future of Decentralized Governance on Polkadot**
-
-Dao Connect is a revolutionary DAO platform built specifically for the Polkadot ecosystem, enabling seamless cross-chain governance, AI-powered decision making, and unprecedented interoperability across parachains.
-
-## 🚀 **Hackathon Submission - Polkadot Full LogoAssetHub**
-
-This project is our submission for the **Polkadot Full LogoAssetHub Hackathon**, showcasing innovative solutions for decentralized governance in the Polkadot ecosystem.
-
----
-
-## 🌟 **Key Features & Innovations**
-
-### 🔗 **Cross-Chain Governance**
-- **XCM Integration**: Seamless cross-chain messaging for multi-parachain DAOs
-- **Parachain Connectivity**: Deploy and manage DAOs across multiple parachains
-- **Asset Hub Integration**: Native support for Polkadot Asset Hub for treasury management
-
-### 🤖 **AI-Powered Governance**
-- **Smart Proposal Analysis**: AI-driven proposal impact assessment and risk analysis
-- **Duplicate Detection**: Intelligent detection of similar proposals to reduce governance noise
-- **Automated Summaries**: AI-generated proposal summaries for better member understanding
-- **Predictive Analytics**: Forecast proposal outcomes and member engagement
-
-### 🌐 **Web3 & Wallet Integration**
-- **Multi-Wallet Support**: MetaMask, Polkadot.js, Talisman, SubWallet, WalletConnect
-- **Seamless Connection**: One-click wallet detection and connection
-- **Cross-Chain Assets**: Manage assets across different parachains from a single interface
-
-### 🏗️ **Smart Contract Architecture**
-- **Substrate Runtime**: Custom pallets for advanced DAO functionality
-- **EVM Compatibility**: Support for both Substrate and EVM-based smart contracts
-- **Upgradeable Contracts**: Future-proof DAO implementations with upgrade mechanisms
-
----
-
-## 🎯 **How We're Different**
-
-### **Polkadot-Native Design**
-Unlike other DAO platforms that are blockchain-agnostic, Dao Connect is built specifically for Polkadot's unique architecture:
-
-- **Native XCM Support**: First DAO platform with built-in cross-chain messaging
-- **Parachain Specialization**: Leverage unique capabilities of different parachains
-- **Shared Security**: Benefit from Polkadot's shared security model
-
-### **AI-First Approach**
-- **Intelligent Governance**: AI assists in every aspect of DAO management
-- **Data-Driven Decisions**: Advanced analytics for better governance outcomes
-- **Automated Workflows**: Reduce manual overhead with smart automation
-
-### **User Experience Focus**
-- **Intuitive Interface**: Designed for both crypto natives and newcomers
-- **Mobile-First**: Responsive design for governance on-the-go
-- **Educational Resources**: Built-in tutorials and documentation
-
----
-
-## 🔧 **Technical Architecture**
-
-### **Frontend Stack**
-\`\`\`
-Next.js 14 (App Router)
-TypeScript
-Tailwind CSS
-shadcn/ui Components
-Framer Motion (Animations)
-\`\`\`
-
-### **Web3 Integration**
-\`\`\`
-Polkadot.js API
-@polkadot/extension-dapp
-ethers.js (EVM compatibility)
-WalletConnect v2
-\`\`\`
-
-### **Smart Contracts**
-\`\`\`
-Substrate Pallets (Rust)
-Solidity Contracts (EVM)
-ink! Smart Contracts
-OpenZeppelin Libraries
-\`\`\`
-
-### **AI & Analytics**
-\`\`\`
-TensorFlow.js
-Natural Language Processing
-Predictive Modeling
-Real-time Analytics
-\`\`\`
-
----
-
-## 🌍 **Impact on Polkadot Ecosystem**
-
-### **Short-Term Impact (6-12 months)**
-1. **Increased DAO Adoption**: Lower barriers to DAO creation and management
-2. **Enhanced Governance Participation**: AI-powered tools increase member engagement
-3. **Cross-Chain Activity**: Drive XCM usage through cross-parachain DAOs
-4. **Developer Onboarding**: Attract Web2 developers to Polkadot ecosystem
-
-### **Long-Term Impact (1-3 years)**
-1. **Governance Infrastructure**: Become the standard for DAO governance in Polkadot
-2. **Ecosystem Growth**: Enable new business models and organizational structures
-3. **Interoperability Showcase**: Demonstrate Polkadot's cross-chain capabilities
-4. **Mass Adoption**: Bridge traditional organizations to Web3 governance
-
-### **Ecosystem Benefits**
-- **Increased DOT Utility**: More use cases for DOT in governance and treasury management
-- **Parachain Utilization**: Drive traffic and usage across multiple parachains
-- **Developer Ecosystem**: Create opportunities for parachain-specific DAO tools
-- **Network Effects**: More DAOs create more value for all participants
-
----
-
-## 🚀 **Future Roadmap**
-
-### **Phase 1: Foundation (Q1 2024)**
-- [x] Core DAO creation and management
-- [x] Multi-wallet integration
-- [x] Basic AI features
-- [x] Asset Hub integration
-
-### **Phase 2: Cross-Chain (Q2 2024)**
-- [ ] XCM integration for cross-parachain governance
-- [ ] Multi-parachain DAO deployment
-- [ ] Advanced treasury management
-- [ ] Mobile application
-
-### **Phase 3: AI Enhancement (Q3 2024)**
-- [ ] Advanced AI governance assistant
-- [ ] Predictive analytics dashboard
-- [ ] Automated proposal routing
-- [ ] Sentiment analysis for proposals
-
-### **Phase 4: Ecosystem Integration (Q4 2024)**
-- [ ] Integration with major parachains (Acala, Moonbeam, Astar)
-- [ ] DeFi protocol integrations
-- [ ] NFT-based membership systems
-- [ ] Governance token launchpad
-
-### **Phase 5: Enterprise & Scale (2025)**
-- [ ] Enterprise DAO solutions
-- [ ] Regulatory compliance tools
-- [ ] Advanced analytics and reporting
-- [ ] White-label DAO platform
-
----
-
-## 🛠️ **Getting Started**
-
-### **Prerequisites**
-\`\`\`bash
-Node.js 18+ 
-npm or yarn
-Git
-\`\`\`
-
-### **Installation**
-\`\`\`bash
-# Clone the repository
-git clone [https://github.com/dao-connect/dao-connect-platform.git](https://github.com/Hitanshuser50/DaoConnect)
-
-# Navigate to project directory
-cd dao-connect-platform
-
-# Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.example .env.local
-
-# Start development server
-npm run dev
-\`\`\`
-
-### **Environment Variables**
-\`\`\`env
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_POLKADOT_RPC_URL=wss://rpc.polkadot.io
-NEXT_PUBLIC_ASSET_HUB_RPC_URL=wss://polkadot-asset-hub-rpc.polkadot.io
-NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
-\`\`\`
-
----
-
-## 🏗️ **Smart Contract Deployment**
-
-### **Substrate Pallets**
-\`\`\`bash
-# Build the runtime
-cargo build --release
-
-# Deploy to local testnet
-./target/release/node-template --dev
-\`\`\`
-
-### **EVM Contracts**
-\`\`\`bash
-# Compile contracts
-npx hardhat compile
-
-# Deploy to Asset Hub
-npx hardhat run scripts/deploy.js --network asset-hub
-\`\`\`
-
----
-
-## 🤝 **Contributing**
-
-We welcome contributions from the Polkadot community! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### **Development Workflow**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
----
-
-## 📊 **Key Metrics & Achievements**
-
-### **Technical Achievements**
-- ✅ **Multi-Wallet Integration**: Support for 5+ wallet types
-- ✅ **Cross-Chain Ready**: XCM integration architecture
-- ✅ **AI-Powered**: 3 AI features implemented
-- ✅ **Mobile Responsive**: 100% mobile compatibility
-- ✅ **Performance**: <2s page load times
-
-### **User Experience**
-- ✅ **Intuitive Design**: User-tested interface
-- ✅ **Accessibility**: WCAG 2.1 AA compliant
-- ✅ **Documentation**: Comprehensive user guides
-- ✅ **Onboarding**: Step-by-step DAO creation
-
----
-
-## 🔐 **Security & Audits**
-
-### **Security Measures**
-- **Smart Contract Audits**: Planned for mainnet deployment
-- **Penetration Testing**: Regular security assessments
-- **Bug Bounty Program**: Community-driven security testing
-- **Multi-Sig Treasury**: Enhanced fund security
-
-### **Best Practices**
-- **Code Reviews**: All code reviewed by multiple developers
-- **Automated Testing**: 90%+ test coverage
-- **Dependency Scanning**: Regular vulnerability scans
-- **Access Controls**: Role-based permissions
-
----
-
-## 📈 **Business Model & Sustainability**
-
-### **Revenue Streams**
-1. **Transaction Fees**: Small fee on DAO transactions
-2. **Premium Features**: Advanced AI and analytics tools
-3. **Enterprise Solutions**: Custom DAO implementations
-4. **Consulting Services**: DAO setup and governance consulting
-
-### **Token Economics**
-- **Governance Token**: CONNECT token for platform governance
-- **Utility Token**: Used for premium features and services
-- **Staking Rewards**: Incentivize long-term participation
-- **Treasury Management**: Community-controlled development fund
-
----
-
-## 🌐 **Community & Support**
-
-### **Join Our Community**
-- **Discord**: [Join our Discord server](https://discord.gg/dao-connect)
-- **Telegram**: [Telegram community](https://t.me/dao_connect)
-- **Twitter**: [@DaoConnect](https://twitter.com/DaoConnect)
-- **GitHub**: [GitHub repository](https://github.com/dao-connect)
-
-### **Support**
-- **Documentation**: [docs.dao-connect.network](https://docs.dao-connect.network)
-- **Help Center**: [help.dao-connect.network](https://help.dao-connect.network)
-- **Email Support**: support@dao-connect.network
-
----
-
-## 📄 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 **Acknowledgments**
-
-- **Polkadot Foundation**: For the amazing ecosystem and hackathon opportunity
-- **Parity Technologies**: For Substrate and the development tools
-- **Web3 Foundation**: For supporting decentralized web initiatives
-- **Community Contributors**: All the developers and users who make this possible
-
----
-
-## 📞 **Contact**
-
-**Team Dao Connect**
-- **Email**: team@dao-connect.network
-- **Website**: [[dao-connect.network](https://dao-connect.vercel.app/)](https://dao-connect.network)
-- **LinkedIn**: [Dao Connect](https://linkedin.com/company/dao-connect)
-
----
+# 🚀 DaoConnect - Polkadot Ecosystem DAO Platform
 
 <div align="center">
-
-**Built with ❤️ for the Polkadot Ecosystem**
-
-[🌐 Website]( # 🌐 Dao Connect - Revolutionary Polkadot DAO Platform
-
-[![Polkadot](https://img.shields.io/badge/Built%20for-Polkadot-E6007A?style=for-the-badge&logo=polkadot)](https://polkadot.network/)
-[![Hackathon](https://img.shields.io/badge/Polkadot-Full%20LogoAssetHub%20Hackathon-FF69B4?style=for-the-badge)](https://polkadot.network/hackathon)
-[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
-[![Next.js](https://img.shields.io/badge/Next.js-14-black?style=for-the-badge&logo=next.js)](https://nextjs.org/)
-
-> **Empowering the Future of Decentralized Governance on Polkadot**
-
-Dao Connect is a revolutionary DAO platform built specifically for the Polkadot ecosystem, enabling seamless cross-chain governance, AI-powered decision making, and unprecedented interoperability across parachains.
-
-## 🚀 **Hackathon Submission - Polkadot Full LogoAssetHub**
-
-This project is our submission for the **Polkadot Full LogoAssetHub Hackathon**, showcasing innovative solutions for decentralized governance in the Polkadot ecosystem.
-
----
-
-## 🌟 **Key Features & Innovations**
-
-### 🔗 **Cross-Chain Governance**
-- **XCM Integration**: Seamless cross-chain messaging for multi-parachain DAOs
-- **Parachain Connectivity**: Deploy and manage DAOs across multiple parachains
-- **Asset Hub Integration**: Native support for Polkadot Asset Hub for treasury management
-
-### 🤖 **AI-Powered Governance**
-- **Smart Proposal Analysis**: AI-driven proposal impact assessment and risk analysis
-- **Duplicate Detection**: Intelligent detection of similar proposals to reduce governance noise
-- **Automated Summaries**: AI-generated proposal summaries for better member understanding
-- **Predictive Analytics**: Forecast proposal outcomes and member engagement
-
-### 🌐 **Web3 & Wallet Integration**
-- **Multi-Wallet Support**: MetaMask, Polkadot.js, Talisman, SubWallet, WalletConnect
-- **Seamless Connection**: One-click wallet detection and connection
-- **Cross-Chain Assets**: Manage assets across different parachains from a single interface
-
-### 🏗️ **Smart Contract Architecture**
-- **Substrate Runtime**: Custom pallets for advanced DAO functionality
-- **EVM Compatibility**: Support for both Substrate and EVM-based smart contracts
-- **Upgradeable Contracts**: Future-proof DAO implementations with upgrade mechanisms
-
----
-
-## 🎯 **How We're Different**
-
-### **Polkadot-Native Design**
-Unlike other DAO platforms that are blockchain-agnostic, Dao Connect is built specifically for Polkadot's unique architecture:
-
-- **Native XCM Support**: First DAO platform with built-in cross-chain messaging
-- **Parachain Specialization**: Leverage unique capabilities of different parachains
-- **Shared Security**: Benefit from Polkadot's shared security model
-
-### **AI-First Approach**
-- **Intelligent Governance**: AI assists in every aspect of DAO management
-- **Data-Driven Decisions**: Advanced analytics for better governance outcomes
-- **Automated Workflows**: Reduce manual overhead with smart automation
-
-### **User Experience Focus**
-- **Intuitive Interface**: Designed for both crypto natives and newcomers
-- **Mobile-First**: Responsive design for governance on-the-go
-- **Educational Resources**: Built-in tutorials and documentation
-
----
-
-## 🔧 **Technical Architecture**
-
-### **Frontend Stack**
-\`\`\`
-Next.js 14 (App Router)
-TypeScript
-Tailwind CSS
-shadcn/ui Components
-Framer Motion (Animations)
-\`\`\`
-
-### **Web3 Integration**
-\`\`\`
-Polkadot.js API
-@polkadot/extension-dapp
-ethers.js (EVM compatibility)
-WalletConnect v2
-\`\`\`
-
-### **Smart Contracts**
-\`\`\`
-Substrate Pallets (Rust)
-Solidity Contracts (EVM)
-ink! Smart Contracts
-OpenZeppelin Libraries
-\`\`\`
-
-### **AI & Analytics**
-\`\`\`
-TensorFlow.js
-Natural Language Processing
-Predictive Modeling
-Real-time Analytics
-\`\`\`
-
----
-
-## 🌍 **Impact on Polkadot Ecosystem**
-
-### **Short-Term Impact (6-12 months)**
-1. **Increased DAO Adoption**: Lower barriers to DAO creation and management
-2. **Enhanced Governance Participation**: AI-powered tools increase member engagement
-3. **Cross-Chain Activity**: Drive XCM usage through cross-parachain DAOs
-4. **Developer Onboarding**: Attract Web2 developers to Polkadot ecosystem
-
-### **Long-Term Impact (1-3 years)**
-1. **Governance Infrastructure**: Become the standard for DAO governance in Polkadot
-2. **Ecosystem Growth**: Enable new business models and organizational structures
-3. **Interoperability Showcase**: Demonstrate Polkadot's cross-chain capabilities
-4. **Mass Adoption**: Bridge traditional organizations to Web3 governance
-
-### **Ecosystem Benefits**
-- **Increased DOT Utility**: More use cases for DOT in governance and treasury management
-- **Parachain Utilization**: Drive traffic and usage across multiple parachains
-- **Developer Ecosystem**: Create opportunities for parachain-specific DAO tools
-- **Network Effects**: More DAOs create more value for all participants
-
----
-
-## 🚀 **Future Roadmap**
-
-### **Phase 1: Foundation (Q1 2024)**
-- [x] Core DAO creation and management
-- [x] Multi-wallet integration
-- [x] Basic AI features
-- [x] Asset Hub integration
-
-### **Phase 2: Cross-Chain (Q2 2024)**
-- [ ] XCM integration for cross-parachain governance
-- [ ] Multi-parachain DAO deployment
-- [ ] Advanced treasury management
-- [ ] Mobile application
-
-### **Phase 3: AI Enhancement (Q3 2024)**
-- [ ] Advanced AI governance assistant
-- [ ] Predictive analytics dashboard
-- [ ] Automated proposal routing
-- [ ] Sentiment analysis for proposals
-
-### **Phase 4: Ecosystem Integration (Q4 2024)**
-- [ ] Integration with major parachains (Acala, Moonbeam, Astar)
-- [ ] DeFi protocol integrations
-- [ ] NFT-based membership systems
-- [ ] Governance token launchpad
-
-### **Phase 5: Enterprise & Scale (2025)**
-- [ ] Enterprise DAO solutions
-- [ ] Regulatory compliance tools
-- [ ] Advanced analytics and reporting
-- [ ] White-label DAO platform
-
----
-
-## 🛠️ **Getting Started**
-
-### **Prerequisites**
-\`\`\`bash
-Node.js 18+ 
-npm or yarn
-Git
-\`\`\`
-
-### **Installation**
-\`\`\`bash
-# Clone the repository
-git clone [https://github.com/dao-connect/dao-connect-platform.git](https://github.com/Hitanshuser50/DaoConnect)
-
-# Navigate to project directory
-cd dao-connect-platform
-
-# Install dependencies
-npm install
-
-# Set up environment variables
-cp .env.example .env.local
-
-# Start development server
-npm run dev
-\`\`\`
-
-### **Environment Variables**
-\`\`\`env
-NEXT_PUBLIC_APP_URL=http://localhost:3000
-NEXT_PUBLIC_POLKADOT_RPC_URL=wss://rpc.polkadot.io
-NEXT_PUBLIC_ASSET_HUB_RPC_URL=wss://polkadot-asset-hub-rpc.polkadot.io
-NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id
-\`\`\`
-
----
-
-## 🏗️ **Smart Contract Deployment**
-
-### **Substrate Pallets**
-\`\`\`bash
-# Build the runtime
-cargo build --release
-
-# Deploy to local testnet
-./target/release/node-template --dev
-\`\`\`
-
-### **EVM Contracts**
-\`\`\`bash
-# Compile contracts
-npx hardhat compile
-
-# Deploy to Asset Hub
-npx hardhat run scripts/deploy.js --network asset-hub
-\`\`\`
-
----
-
-## 🤝 **Contributing**
-
-We welcome contributions from the Polkadot community! Please see our [Contributing Guidelines](CONTRIBUTING.md) for details.
-
-### **Development Workflow**
-1. Fork the repository
-2. Create a feature branch
-3. Make your changes
-4. Add tests
-5. Submit a pull request
-
----
-
-## 📊 **Key Metrics & Achievements**
-
-### **Technical Achievements**
-- ✅ **Multi-Wallet Integration**: Support for 5+ wallet types
-- ✅ **Cross-Chain Ready**: XCM integration architecture
-- ✅ **AI-Powered**: 3 AI features implemented
-- ✅ **Mobile Responsive**: 100% mobile compatibility
-- ✅ **Performance**: <2s page load times
-
-### **User Experience**
-- ✅ **Intuitive Design**: User-tested interface
-- ✅ **Accessibility**: WCAG 2.1 AA compliant
-- ✅ **Documentation**: Comprehensive user guides
-- ✅ **Onboarding**: Step-by-step DAO creation
-
----
-
-## 🔐 **Security & Audits**
-
-### **Security Measures**
-- **Smart Contract Audits**: Planned for mainnet deployment
-- **Penetration Testing**: Regular security assessments
-- **Bug Bounty Program**: Community-driven security testing
-- **Multi-Sig Treasury**: Enhanced fund security
-
-### **Best Practices**
-- **Code Reviews**: All code reviewed by multiple developers
-- **Automated Testing**: 90%+ test coverage
-- **Dependency Scanning**: Regular vulnerability scans
-- **Access Controls**: Role-based permissions
-
----
-
-## 📈 **Business Model & Sustainability**
-
-### **Revenue Streams**
-1. **Transaction Fees**: Small fee on DAO transactions
-2. **Premium Features**: Advanced AI and analytics tools
-3. **Enterprise Solutions**: Custom DAO implementations
-4. **Consulting Services**: DAO setup and governance consulting
-
-### **Token Economics**
-- **Governance Token**: CONNECT token for platform governance
-- **Utility Token**: Used for premium features and services
-- **Staking Rewards**: Incentivize long-term participation
-- **Treasury Management**: Community-controlled development fund
-
----
-
-## 🌐 **Community & Support**
-
-### **Join Our Community**
-- **Discord**: [Join our Discord server](https://discord.gg/dao-connect)
-- **Telegram**: [Telegram community](https://t.me/dao_connect)
-- **Twitter**: [@DaoConnect](https://twitter.com/DaoConnect)
-- **GitHub**: [GitHub repository](https://github.com/dao-connect)
-
-### **Support**
-- **Documentation**: [docs.dao-connect.network](https://docs.dao-connect.network)
-- **Help Center**: [help.dao-connect.network](https://help.dao-connect.network)
-- **Email Support**: support@dao-connect.network
-
----
-
-## 📄 **License**
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-
-## 🙏 **Acknowledgments**
-
-- **Polkadot Foundation**: For the amazing ecosystem and hackathon opportunity
-- **Parity Technologies**: For Substrate and the development tools
-- **Web3 Foundation**: For supporting decentralized web initiatives
-- **Community Contributors**: All the developers and users who make this possible
-
----
-
-## 📞 **Contact**
-
-**Team Dao Connect**
-- **Email**: team@dao-connect.network
-- **Website**: [[dao-connect.network](https://dao-connect.vercel.app/)](https://dao-connect.network)
-- **LinkedIn**: [Dao Connect](https://linkedin.com/company/dao-connect)
-
----
-
-<div align="center">
-
-**Built with ❤️ for the Polkadot Ecosystem**
-
-[🌐 Website](https://dao-connect.network) • [📚 Docs](https://docs.dao-connect.network) • [💬 Discord](https://discord.gg/dao-connect) • [🐦 Twitter](https://twitter.com/DaoConnect)
-
+  <img src="/public/images/edge-polkadot-integration.jpg" alt="Polkadot Integration" width="600" />
+  
+  **Revolutionary DAO platform built specifically for the Polkadot ecosystem**
+  
+  [![Polkadot](https://img.shields.io/badge/Polkadot-E6007A?style=for-the-badge&logo=polkadot&logoColor=white)](https://polkadot.network/)
+  [![Substrate](https://img.shields.io/badge/Substrate-282828?style=for-the-badge&logo=parity-substrate&logoColor=white)](https://substrate.io/)
+  [![Next.js](https://img.shields.io/badge/Next.js-000000?style=for-the-badge&logo=next.js&logoColor=white)](https://nextjs.org/)
+  [![TypeScript](https://img.shields.io/badge/TypeScript-007ACC?style=for-the-badge&logo=typescript&logoColor=white)](https://www.typescriptlang.org/)
 </div>
- ) • [📚 Docs](https://docs.dao-connect.network) • [💬 Discord](https://discord.gg/dao-connect) • [🐦 Twitter](https://twitter.com/DaoConnect)
 
+## 🌟 What Makes DaoConnect Special
+
+DaoConnect is the **first comprehensive DAO platform** built specifically for the Polkadot ecosystem, supporting both **Substrate-native** and **EVM-compatible parachains**.
+
+### 🔗 Polkadot Ecosystem Integration
+- **Multi-Parachain Support** - Works across Moonbeam, Astar, Acala, and more
+- **Cross-Chain Messaging (XCM)** - Seamless asset transfers between parachains  
+- **Substrate Native** - Direct integration with Polkadot's governance primitives
+- **EVM Compatibility** - Smart contracts on Moonbeam and other EVM parachains
+- **Shared Security** - Benefit from Polkadot's shared security model
+
+## 🚀 Quick Start
+
+### Prerequisites
+- Node.js 18+ 
+- npm/yarn/pnpm
+- Polkadot.js extension or compatible wallet
+- Access to Polkadot ecosystem RPCs
+
+### 1. Clone & Install
+\`\`\`bash
+git clone https://github.com/your-org/daoconnect
+cd daoconnect
+npm install
+\`\`\`
+
+### 2. Environment Configuration
+
+Create a `.env.local` file with the following variables:
+
+\`\`\`bash
+# === REQUIRED: POLKADOT NETWORK CONFIGURATION ===
+# Primary RPC endpoint (Moonbeam recommended for EVM compatibility)
+NEXT_PUBLIC_RPC_URL=https://rpc.api.moonbeam.network
+NEXT_PUBLIC_WS_RPC_URL=wss://wss.api.moonbeam.network
+
+# Network identification
+NEXT_PUBLIC_CHAIN_ID=1284
+NEXT_PUBLIC_NETWORK_NAME=moonbeam
+
+# === REQUIRED: CONTRACT ADDRESSES ===
+# Deploy your contracts first, then add addresses here
+NEXT_PUBLIC_DAO_FACTORY_ADDRESS=0x...
+NEXT_PUBLIC_GOVERNANCE_ADDRESS=0x...
+NEXT_PUBLIC_TREASURY_ADDRESS=0x...
+
+# === REQUIRED: API CONFIGURATION ===
+NEXT_PUBLIC_API_URL=http://localhost:3000/api
+
+# === REQUIRED: WALLET INTEGRATION ===
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_walletconnect_project_id
+
+# === FEATURE FLAGS ===
+NEXT_PUBLIC_ENABLE_REAL_TIME=true
+NEXT_PUBLIC_ENABLE_NOTIFICATIONS=true
+NEXT_PUBLIC_ENABLE_XCM=true
+NEXT_PUBLIC_ENABLE_SUBSTRATE=true
+
+# === PERFORMANCE TUNING ===
+NEXT_PUBLIC_EVENT_POLLING_INTERVAL=5000
+NEXT_PUBLIC_MAX_EVENTS_CACHE=100
+NEXT_PUBLIC_BLOCK_CONFIRMATION_COUNT=2
+
+# === POLKADOT RELAY CHAINS ===
+NEXT_PUBLIC_POLKADOT_RELAY_RPC=wss://rpc.polkadot.io
+NEXT_PUBLIC_KUSAMA_RELAY_RPC=wss://kusama-rpc.polkadot.io
+
+# === SERVER-ONLY VARIABLES ===
+WS_RPC_URL=wss://wss.api.moonbeam.network
+ALCHEMY_API_KEY=your_alchemy_key_optional
+INFURA_PROJECT_ID=your_infura_id_optional
+GEMINI_API_KEY=your_gemini_key_for_ai_features
+\`\`\`
+
+## 🔧 Where to Get API Keys & Endpoints
+
+### 🌐 RPC Endpoints (FREE)
+
+#### **Moonbeam (Recommended for Smart Contracts)**
+\`\`\`bash
+NEXT_PUBLIC_RPC_URL=https://rpc.api.moonbeam.network
+NEXT_PUBLIC_WS_RPC_URL=wss://wss.api.moonbeam.network
+NEXT_PUBLIC_CHAIN_ID=1284
+\`\`\`
+
+#### **Moonriver (Kusama Ecosystem)**
+\`\`\`bash
+NEXT_PUBLIC_RPC_URL=https://rpc.api.moonriver.moonbeam.network
+NEXT_PUBLIC_WS_RPC_URL=wss://wss.api.moonriver.moonbeam.network
+NEXT_PUBLIC_CHAIN_ID=1285
+\`\`\`
+
+#### **Astar Network**
+\`\`\`bash
+NEXT_PUBLIC_RPC_URL=https://evm.astar.network
+NEXT_PUBLIC_WS_RPC_URL=wss://rpc.astar.network
+NEXT_PUBLIC_CHAIN_ID=592
+\`\`\`
+
+#### **Acala Network**
+\`\`\`bash
+NEXT_PUBLIC_RPC_URL=https://eth-rpc-acala.aca-api.network
+NEXT_PUBLIC_WS_RPC_URL=wss://acala-rpc.aca-api.network/ws
+NEXT_PUBLIC_CHAIN_ID=787
+\`\`\`
+
+#### **Polkadot Relay Chain (Substrate)**
+\`\`\`bash
+NEXT_PUBLIC_POLKADOT_RELAY_RPC=wss://rpc.polkadot.io
+\`\`\`
+
+#### **Kusama Relay Chain (Substrate)**
+\`\`\`bash
+NEXT_PUBLIC_KUSAMA_RELAY_RPC=wss://kusama-rpc.polkadot.io
+\`\`\`
+
+### 🔑 API Keys
+
+#### **WalletConnect Project ID** (REQUIRED)
+1. Visit [WalletConnect Cloud](https://cloud.walletconnect.com)
+2. Create free account
+3. Create new project
+4. Copy Project ID
+\`\`\`bash
+NEXT_PUBLIC_WALLETCONNECT_PROJECT_ID=your_project_id_here
+\`\`\`
+
+#### **Alchemy API Key** (OPTIONAL - Better Performance)
+1. Visit [Alchemy](https://www.alchemy.com)
+2. Create account
+3. Create app for your network
+4. Copy API key
+\`\`\`bash
+ALCHEMY_API_KEY=your_alchemy_api_key
+\`\`\`
+
+#### **Gemini AI API Key** (OPTIONAL - AI Features)
+1. Visit [Google AI Studio](https://makersuite.google.com/app/apikey)
+2. Create API key
+3. Add to environment
+\`\`\`bash
+GEMINI_API_KEY=your_gemini_api_key
+\`\`\`
+
+### 📝 Contract Deployment
+
+Before using the platform, deploy the smart contracts:
+
+\`\`\`bash
+# Install Hardhat
+npm install --save-dev hardhat
+
+# Deploy to Moonbeam
+npx hardhat run scripts/deploy.js --network moonbeam
+
+# Copy contract addresses to .env.local
+NEXT_PUBLIC_DAO_FACTORY_ADDRESS=0x...
+NEXT_PUBLIC_GOVERNANCE_ADDRESS=0x...
+NEXT_PUBLIC_TREASURY_ADDRESS=0x...
+\`\`\`
+
+## 🏗️ Development
+
+### Start Development Server
+\`\`\`bash
+npm run dev
+\`\`\`
+
+### Build for Production
+\`\`\`bash
+npm run build
+npm start
+\`\`\`
+
+### Deploy Smart Contracts
+\`\`\`bash
+npm run deploy:moonbeam
+npm run deploy:astar
+npm run deploy:acala
+\`\`\`
+
+## 🌍 Supported Networks
+
+| Network | Type | Chain ID | RPC Endpoint | Status |
+|---------|------|----------|--------------|--------|
+| **Moonbeam** | EVM | 1284 | `https://rpc.api.moonbeam.network` | ✅ Primary |
+| **Moonriver** | EVM | 1285 | `https://rpc.api.moonriver.moonbeam.network` | ✅ Supported |
+| **Astar** | EVM | 592 | `https://evm.astar.network` | ✅ Supported |
+| **Acala** | EVM | 787 | `https://eth-rpc-acala.aca-api.network` | ✅ Supported |
+| **Polkadot** | Substrate | - | `wss://rpc.polkadot.io` | 🔄 Coming Soon |
+| **Kusama** | Substrate | - | `wss://kusama-rpc.polkadot.io` | 🔄 Coming Soon |
+
+## 🎯 Features
+
+### 🏛️ DAO Governance
+- **Proposal Creation** - Create and submit governance proposals
+- **Voting System** - Secure, transparent voting mechanisms  
+- **Treasury Management** - Multi-signature treasury operations
+- **Member Management** - Role-based access control
+
+### 🔗 Polkadot Integration
+- **Cross-Chain Assets** - Transfer assets between parachains
+- **XCM Support** - Cross-consensus messaging protocol
+- **Substrate Pallets** - Direct integration with governance pallets
+- **Parachain Connectivity** - Connect to multiple parachains
+
+### 🤖 AI-Powered Features
+- **Proposal Analysis** - AI-powered proposal impact analysis
+- **Governance Insights** - Smart recommendations for DAO operations
+- **Risk Assessment** - Automated risk analysis for proposals
+- **Trend Analysis** - Market and governance trend insights
+
+### 📱 User Experience
+- **Real-time Updates** - Live blockchain event streaming
+- **Mobile Optimized** - Progressive Web App (PWA) support
+- **Multi-Wallet** - Support for all major Polkadot wallets
+- **Dark/Light Mode** - Beautiful, accessible interface
+
+## 🔒 Security
+
+- **Multi-signature Treasury** - Secure fund management
+- **Time-locked Proposals** - Execution delays for security
+- **Access Control** - Role-based permissions
+- **Audit Ready** - Clean, auditable smart contract code
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](CONTRIBUTING.md).
+
+## 📄 License
+
+MIT License - see [LICENSE](LICENSE) file.
+
+## 🆘 Support
+
+- **Documentation**: [docs.daoconnect.app](https://docs.daoconnect.app)
+- **Discord**: [Join our community](https://discord.gg/daoconnect)
+- **Twitter**: [@DaoConnect](https://twitter.com/daoconnect)
+- **Email**: support@daoconnect.app
+
+---
+
+<div align="center">
+  <strong>Built with ❤️ for the Polkadot ecosystem</strong>
 </div>

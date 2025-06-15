@@ -9,29 +9,8 @@ import { Input } from "@/components/ui/input"
 import { Textarea } from "@/components/ui/textarea"
 import { Label } from "@/components/ui/label"
 import { Badge } from "@/components/ui/badge"
-import { Loader2, Sparkles, CheckCircle, Info } from "lucide-react"
+import { Loader2, Sparkles, CheckCircle } from "lucide-react"
 import { useAuth } from "@/lib/auth"
-
-// Custom tooltip component that works reliably
-const InfoTooltip = ({ children, content }: { children: React.ReactNode; content: string }) => {
-  const [isVisible, setIsVisible] = useState(false)
-
-  return (
-    <div className="relative inline-block">
-      <div onMouseEnter={() => setIsVisible(true)} onMouseLeave={() => setIsVisible(false)} className="cursor-help">
-        {children}
-      </div>
-      {isVisible && (
-        <div className="absolute z-50 w-64 p-2 mt-1 text-sm text-white bg-gray-900 rounded-md shadow-lg -top-2 left-6">
-          <div className="relative">
-            {content}
-            <div className="absolute w-2 h-2 bg-gray-900 transform rotate-45 -left-1 top-2"></div>
-          </div>
-        </div>
-      )}
-    </div>
-  )
-}
 
 export function CreateDAOForm() {
   const [isLoading, setIsLoading] = useState(false)
@@ -40,8 +19,10 @@ export function CreateDAOForm() {
     name: "",
     description: "",
     category: "",
-    uri: "",
-    nftSupply: "",
+    initialSupply: "",
+    membershipNFTUri: "",
+    parachain: "", // Added for Polkadot
+    xcmConfiguration: "", // Added for Polkadot
   })
 
   const { wallet } = useAuth()
@@ -58,7 +39,7 @@ export function CreateDAOForm() {
         },
         body: JSON.stringify({
           ...formData,
-          founder: wallet?.address,
+          founder: wallet?.address, // Get from auth context
         }),
       })
 
@@ -110,12 +91,7 @@ export function CreateDAOForm() {
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="name">DAO Name *</Label>
-              <InfoTooltip content="Choose a unique and memorable name for your DAO. This will be displayed publicly and used to identify your organization.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
+            <Label htmlFor="name">DAO Name *</Label>
             <Input
               id="name"
               placeholder="e.g., DeFi Innovation DAO"
@@ -126,12 +102,7 @@ export function CreateDAOForm() {
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="category">Category</Label>
-              <InfoTooltip content="Select the primary focus area of your DAO. This helps users discover and understand your organization's purpose.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
+            <Label htmlFor="category">Category</Label>
             <select
               id="category"
               className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
@@ -149,12 +120,7 @@ export function CreateDAOForm() {
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Label htmlFor="description">Description *</Label>
-            <InfoTooltip content="Provide a clear description of your DAO's mission, goals, and what members can expect. This will be visible to potential members.">
-              <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-            </InfoTooltip>
-          </div>
+          <Label htmlFor="description">Description *</Label>
           <Textarea
             id="description"
             placeholder="Describe your DAO's mission and goals..."
@@ -167,35 +133,52 @@ export function CreateDAOForm() {
 
         <div className="grid md:grid-cols-2 gap-6">
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="uri">URI</Label>
-              <InfoTooltip content="A web address or IPFS link containing additional metadata about your DAO, such as logos, detailed descriptions, or governance documents.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
+            <Label htmlFor="initialSupply">Initial Token Supply</Label>
             <Input
-              id="uri"
-              placeholder="https://your-dao-website.com or ipfs://..."
-              value={formData.uri}
-              onChange={(e) => setFormData({ ...formData, uri: e.target.value })}
+              id="initialSupply"
+              type="number"
+              placeholder="1000000"
+              value={formData.initialSupply}
+              onChange={(e) => setFormData({ ...formData, initialSupply: e.target.value })}
             />
+            <p className="text-xs text-slate-500">Leave empty to skip token creation</p>
           </div>
 
           <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="nftSupply">NFT Supply</Label>
-              <InfoTooltip content="The total number of membership NFTs that can be minted. These NFTs represent membership and voting rights in your DAO.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
+            <Label htmlFor="membershipNFTUri">Membership NFT Metadata URI</Label>
             <Input
-              id="nftSupply"
-              type="number"
-              placeholder="e.g., 1000"
-              value={formData.nftSupply}
-              onChange={(e) => setFormData({ ...formData, nftSupply: e.target.value })}
+              id="membershipNFTUri"
+              placeholder="https://ipfs.io/ipfs/..."
+              value={formData.membershipNFTUri}
+              onChange={(e) => setFormData({ ...formData, membershipNFTUri: e.target.value })}
             />
+            <p className="text-xs text-slate-500">Optional: URI for membership NFT metadata</p>
           </div>
+        </div>
+
+        {/* Polkadot Specific Options */}
+        <div className="space-y-2">
+          <Label htmlFor="parachain">Parachain ID (Polkadot)</Label>
+          <Input
+            id="parachain"
+            type="number"
+            placeholder="e.g., 2000"
+            value={formData.parachain}
+            onChange={(e) => setFormData({ ...formData, parachain: e.target.value })}
+          />
+          <p className="text-xs text-slate-500">Required for Polkadot-based DAOs</p>
+        </div>
+
+        <div className="space-y-2">
+          <Label htmlFor="xcmConfiguration">XCM Configuration (Polkadot)</Label>
+          <Textarea
+            id="xcmConfiguration"
+            placeholder="JSON configuration for XCM"
+            value={formData.xcmConfiguration}
+            onChange={(e) => setFormData({ ...formData, xcmConfiguration: e.target.value })}
+            rows={4}
+          />
+          <p className="text-xs text-slate-500">Optional: Configure cross-chain messaging</p>
         </div>
 
         <div className="bg-pink-50 border border-pink-200 rounded-lg p-4">
