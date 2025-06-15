@@ -127,7 +127,6 @@ interface DAOFormData {
   name: string;
   description: string;
   nftSupply: string;
-  uri: string;
 }
 
 interface DAOConnectProps { 
@@ -148,7 +147,6 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
     name: '',
     description: '',
     nftSupply: '',
-    uri: ''
   });
 
   // Connect to MetaMask
@@ -210,7 +208,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
       return;
     }
 
-    if (!formData.name || !formData.description || !formData.nftSupply || !formData.uri) {
+    if (!formData.name || !formData.description || !formData.nftSupply) {
       alert('Please fill in all fields!');
       return;
     }
@@ -218,14 +216,12 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
     setLoading(true);
     try {
       const daos = await contract.getAllDAOs();
-      const required = 0; // Since amountRequired is not defined in the contract
       const count = daos.length;
       const tx = await contract.createDAO(
         formData.name,
         formData.description,
         formData.nftSupply,
-        formData.uri,
-        { value: required }
+        { value: amountRequired }
       );
 
       console.log('Transaction sent:', tx.hash);
@@ -238,7 +234,6 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         name: '',
         description: '',
         nftSupply: '',
-        uri: ''
       });
 
       // Reload contract data
@@ -350,21 +345,6 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                   onChange={handleInputChange}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter NFT supply (e.g., 1000)"
-                  required
-                />
-              </div>
-              
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Metadata URI *
-                </label>
-                <input
-                  type="url"
-                  name="uri"
-                  value={formData.uri}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter metadata URI (IPFS or HTTP)"
                   required
                 />
               </div>
