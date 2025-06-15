@@ -171,6 +171,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
+  const [showInEth, setShowInEth] = useState<ethers.Contract | null>(null);
   const [account, setAccount] = useState<string>("");
   const [ownerAddress, setOwnerAddress] = useState<string>("");
   const [isConnected, setIsConnected] = useState<boolean>(false);
@@ -224,8 +225,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
       const formattedRequired = ethers.formatUnits(required, 9);
       const count = daos.length;
 
-      console.log(required.toString());
-      console.log(formattedRequired);
+      setShowInEth(formattedRequired);
 
       setAmountRequired(formattedRequired);
       setAmountRequired(required.toString());
@@ -340,7 +340,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
               <div>
                 <p className="text-sm text-gray-600">Amount Required</p>
                 <p className="text-lg font-bold text-gray-800">
-                  {amountRequired} ETH
+                  {showInEth} ETH
                 </p>
               </div>
               <div>
@@ -399,9 +399,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                 disabled={loading}
                 className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200"
               >
-                {loading
-                  ? "Creating DAO..."
-                  : `Create DAO (${amountRequired} ETH)`}
+                {loading ? "Creating DAO..." : `Create DAO (${showInEth} ETH)`}
               </button>
             </form>
           </div>
