@@ -340,7 +340,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
               <div>
                 <p className="text-sm text-gray-600">Amount Required</p>
                 <p className="text-lg font-bold text-gray-800">
-                  {amountRequired} Gwei
+                  {amountRequired} ETH
                 </p>
               </div>
               <div>
