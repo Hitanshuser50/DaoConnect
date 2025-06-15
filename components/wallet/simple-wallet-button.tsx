@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Button } from "@/components/ui/button"
 import {
   Dialog,
@@ -25,7 +25,14 @@ import { toast } from "sonner"
 export function SimpleWalletButton() {
   const { isConnected, address, chainId, balance, isConnecting, connect, disconnect, getChainName } = useSimpleWallet()
   const [isOpen, setIsOpen] = useState(false)
-
+  const [isClient, setIsClient] = useState(false)
+  
+  useEffect(() => {
+    setIsClient(true);
+  }, []);
+  if (typeof window === "undefined") {
+    return null; // Prevent rendering on the server
+  }
   const handleConnect = async () => {
     try {
       await connect()
@@ -107,9 +114,9 @@ export function SimpleWalletButton() {
       <DropdownMenuTrigger asChild>
         <Button variant="outline" className="gap-2">
           <Wallet className="h-4 w-4" />
-          <span className="hidden sm:inline">
-            {address?.slice(0, 6)}...{address?.slice(-4)}
-          </span>
+          { isClient && (<span className="hidden sm:inline">
+            {address ? `${address.slice(0, 6)}...${address.slice(-4)}` : 'Connect Wallet'}
+            </span>)}
           {chainId && (
             <Badge variant="secondary" className="hidden md:inline-flex">
               {getChainName(chainId)}

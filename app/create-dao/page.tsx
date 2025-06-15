@@ -12,7 +12,7 @@ export default function CreateDAOPage() {
           </p>
         </div>
 
-        <DAOConnect contractAddress="0xD1758e1205f79C4F2dAc8f6b7D32A2E517835851" />
+        <DAOConnect contractAddress="0xa535C6fBA3B072dfcf7f1e6c53c495F3E950460c" />
       </div>
     </div>
   )
