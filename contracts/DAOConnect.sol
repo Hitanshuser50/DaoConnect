@@ -5,12 +5,38 @@ import "./Dao.sol";
 
 contract DAOConnect {
     address[] public daos;
+    uint256 public daoCount = 0;
+    uint256 public amountRequired = 0;
+    address public factoryOwner;
 
+    event AmountRequiredUpdated(uint256 newAmount);
     event DAOCreated(address indexed daoAddress, string name, address creator);
 
-    function createDAO(string memory _name) public {
-        DAO dao = new DAO(_name, msg.sender);
+    modifier onlyOwner() {
+        require(msg.sender == factoryOwner, "Not the owner/governance of DaoConnect");
+        _;
+    }
+
+    constructor() {
+        factoryOwner = msg.sender;
+    }
+
+    function setAmountRequiredToCreateDao(uint256 _amt) external onlyOwner {
+        amountRequired = _amt;
+        emit AmountRequiredUpdated(_amt);
+    }
+
+    function createDAO(
+        string memory _name,
+        string memory _description,
+        uint256 _nftSupply
+    ) external payable {
+        require(msg.value >= amountRequired, "Insufficient funds provided to create DAO");
+
+        DAO dao = new DAO(_name, _description, _nftSupply, msg.sender);
         daos.push(address(dao));
+        daoCount++;
+
         emit DAOCreated(address(dao), _name, msg.sender);
     }
 
