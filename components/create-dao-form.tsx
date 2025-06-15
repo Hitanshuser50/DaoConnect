@@ -4,157 +4,157 @@ import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
 // Contract ABI for DAOConnect
-const DAO_CONNECT_ABI =[
-	{
-		"inputs": [],
-		"stateMutability": "nonpayable",
-		"type": "constructor"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": false,
-				"internalType": "uint256",
-				"name": "newAmount",
-				"type": "uint256"
-			}
-		],
-		"name": "AmountRequiredUpdated",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "string",
-				"name": "_name",
-				"type": "string"
-			},
-			{
-				"internalType": "string",
-				"name": "_description",
-				"type": "string"
-			},
-			{
-				"internalType": "uint256",
-				"name": "_nftSupply",
-				"type": "uint256"
-			}
-		],
-		"name": "createDAO",
-		"outputs": [],
-		"stateMutability": "payable",
-		"type": "function"
-	},
-	{
-		"anonymous": false,
-		"inputs": [
-			{
-				"indexed": true,
-				"internalType": "address",
-				"name": "daoAddress",
-				"type": "address"
-			},
-			{
-				"indexed": false,
-				"internalType": "string",
-				"name": "name",
-				"type": "string"
-			},
-			{
-				"indexed": false,
-				"internalType": "address",
-				"name": "creator",
-				"type": "address"
-			}
-		],
-		"name": "DAOCreated",
-		"type": "event"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "_amt",
-				"type": "uint256"
-			}
-		],
-		"name": "setAmountRequiredToCreateDao",
-		"outputs": [],
-		"stateMutability": "nonpayable",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "amountRequired",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "daoCount",
-		"outputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [
-			{
-				"internalType": "uint256",
-				"name": "",
-				"type": "uint256"
-			}
-		],
-		"name": "daos",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "factoryOwner",
-		"outputs": [
-			{
-				"internalType": "address",
-				"name": "",
-				"type": "address"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	},
-	{
-		"inputs": [],
-		"name": "getAllDAOs",
-		"outputs": [
-			{
-				"internalType": "address[]",
-				"name": "",
-				"type": "address[]"
-			}
-		],
-		"stateMutability": "view",
-		"type": "function"
-	}
+const DAO_CONNECT_ABI = [
+  {
+    "inputs": [],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": false,
+        "internalType": "uint256",
+        "name": "newAmount",
+        "type": "uint256"
+      }
+    ],
+    "name": "AmountRequiredUpdated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "string",
+        "name": "_name",
+        "type": "string"
+      },
+      {
+        "internalType": "string",
+        "name": "_description",
+        "type": "string"
+      },
+      {
+        "internalType": "uint256",
+        "name": "_nftSupply",
+        "type": "uint256"
+      }
+    ],
+    "name": "createDAO",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {
+        "indexed": true,
+        "internalType": "address",
+        "name": "daoAddress",
+        "type": "address"
+      },
+      {
+        "indexed": false,
+        "internalType": "string",
+        "name": "name",
+        "type": "string"
+      },
+      {
+        "indexed": false,
+        "internalType": "address",
+        "name": "creator",
+        "type": "address"
+      }
+    ],
+    "name": "DAOCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "_amt",
+        "type": "uint256"
+      }
+    ],
+    "name": "setAmountRequiredToCreateDao",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "amountRequired",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoCount",
+    "outputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [
+      {
+        "internalType": "uint256",
+        "name": "",
+        "type": "uint256"
+      }
+    ],
+    "name": "daos",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "factoryOwner",
+    "outputs": [
+      {
+        "internalType": "address",
+        "name": "",
+        "type": "address"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllDAOs",
+    "outputs": [
+      {
+        "internalType": "address[]",
+        "name": "",
+        "type": "address[]"
+      }
+    ],
+    "stateMutability": "view",
+    "type": "function"
+  }
 ];
 
 interface DAOFormData {
@@ -163,7 +163,7 @@ interface DAOFormData {
   nftSupply: string;
 }
 
-interface DAOConnectProps { 
+interface DAOConnectProps {
   contractAddress: string; // You'll need to provide this after deployment
 }
 
@@ -172,6 +172,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
   const [account, setAccount] = useState<string>('');
+  const [owner, setOwner] = useState<string>('');
   const [isConnected, setIsConnected] = useState<boolean>(false);
   const [loading, setLoading] = useState<boolean>(false);
   const [amountRequired, setAmountRequired] = useState<string>('0');
@@ -191,7 +192,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         const accounts = await provider.send('eth_requestAccounts', []);
         const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddress, DAO_CONNECT_ABI, signer);
-        
+
         console.log(contract);
         setProvider(provider);
         setSigner(signer);
@@ -213,14 +214,16 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   // Load contract data
   const loadContractData = async (contractInstance: ethers.Contract) => {
     try {
-     const daos = await contractInstance.getAllDAOs();
-     const ownerAddress = await contractInstance.factoryOwner();
-    const required = 0; // Since amountRequired is not defined in the contract
-    const count = daos.length;
+      const daos = await contractInstance.getAllDAOs();
+      const ownerAddress = await contractInstance.factoryOwner();
+      const required = 0; // Since amountRequired is not defined in the contract
+      const count = daos.length;
+
 
       setAmountRequired(ethers.formatEther(required));
       setDaoCount(Number(count));
       setAllDAOs(daos);
+      setOwner(owner)
     } catch (error) {
       console.error('Error loading contract data:', error);
     }
@@ -251,7 +254,6 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
     setLoading(true);
     try {
       const daos = await contract.getAllDAOs();
-      const count = daos.length;
       const tx = await contract.createDAO(
         formData.name,
         formData.description,
@@ -261,9 +263,9 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
 
       console.log('Transaction sent:', tx.hash);
       await tx.wait();
-      
+
       alert('DAO created successfully!');
-      
+
       // Reset form
       setFormData({
         name: '',
@@ -306,7 +308,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         ) : (
           <div className="bg-green-100 p-4 rounded-lg">
             <p className="text-green-800">
-               { `Contract Address: ${contractAddress.slice(0, 6)}...${contractAddress.slice(-4)}` }
+              {`Contract Address: ${contractAddress.slice(0, 6)}...${contractAddress.slice(-4)}`}
             </p>
           </div>
         )}
@@ -329,7 +331,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
               <div>
                 <p className="text-sm text-gray-600">Owner Address</p>
                 <p className="text-sm font-mono text-gray-800">
-                  {ownerAddress ? `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}` : 'Not connected'}
+                  {owner ? `${owner.slice(0, 6)}...${owner.slice(-4)}` : 'Not connected'}
                 </p>
               </div>
             </div>
@@ -353,7 +355,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   Description *
@@ -368,7 +370,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                   required
                 />
               </div>
-              
+
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
                   NFT Supply *
@@ -383,7 +385,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                   required
                 />
               </div>
-              
+
               <button
                 type="submit"
                 disabled={loading}
