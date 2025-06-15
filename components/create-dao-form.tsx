@@ -216,21 +216,14 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const loadContractData = async (contractInstance: ethers.Contract) => {
     try {
       const daos = await contractInstance.getAllDAOs();
-      const ownerAddress = await contractInstance.factoryOwner();
-      const required = 0; // Since amountRequired is not defined in the contract
+      const owner = await contractInstance.factoryOwner();
+      const required = await contractInstance.amountRequired();
       const count = daos.length;
-
-     try {
-     const daos = await contractInstance.getAllDAOs();
-     const owner = await contractInstance.factoryOwner();
-     const required = 0; // Since amountRequired is not defined in the contract
-     const count = daos.length;
 
       setAmountRequired(ethers.formatEther(required));
       setDaoCount(Number(count));
       setAllDAOs(daos);
       setOwnerAddress(owner);
-      setAllDAOs(daos);
     } catch (error) {
       console.error('Error loading contract data:', error);
     }
@@ -265,7 +258,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
         formData.name,
         formData.description,
         formData.nftSupply,
-        { value: amountRequired }
+        // { value: amountRequired }
       );
 
       console.log('Transaction sent:', tx.hash);
@@ -338,7 +331,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
               <div>
                 <p className="text-sm text-gray-600">Owner Address</p>
                 <p className="text-sm font-mono text-gray-800">
-                  {owner ? `${owner.slice(0, 6)}...${owner.slice(-4)}` : 'Not connected'}
+                  {ownerAddress ? `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}` : ''}
                 </p>
               </div>
             </div>
