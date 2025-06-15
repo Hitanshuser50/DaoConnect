@@ -17,9 +17,8 @@ contract DAOConnect {
         _;
     }
 
-    constructor(uint256 _amountRequired) {
+    constructor() {
         factoryOwner = msg.sender;
-        amountRequired = _amountRequired;
     }
 
     function setAmountRequiredToCreateDao(uint256 _amt) external onlyOwner {
