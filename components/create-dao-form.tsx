@@ -178,7 +178,6 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const [amountRequired, setAmountRequired] = useState<string>("0");
   const [daoCount, setDaoCount] = useState<number>(0);
   const [allDAOs, setAllDAOs] = useState<string[]>([]);
-  const [ownerAddress, setOwnerAddress] = useState<string>('');
   const [formData, setFormData] = useState<DAOFormData>({
     name: "",
     description: "",
@@ -222,12 +221,15 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
       const daos = await contractInstance.getAllDAOs();
       const owner = await contractInstance.factoryOwner();
       const required = await contractInstance.amountRequired();
-      const owner = await contractInstance.factoryOwner();
-      const required = await contractInstance.amountRequired();
+      const formattedRequired = ethers.formatUnits(required, 9);
       const count = daos.length;
 
-      setAmountRequired(ethers.formatEther(required));
-      console.log(required);
+      console.log(required.toString());
+      console.log(formattedRequired);
+
+      setAmountRequired(formattedRequired);
+      setAmountRequired(required.toString());
+
       setDaoCount(Number(count));
       setAllDAOs(daos);
       setOwnerAddress(owner);
@@ -255,7 +257,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
       return;
     }
 
-    if (!formData.name || !formData.description || !formData.nftSupply) {
+    if (!formData.name || !formData.description) {
       alert("Please fill in all fields!");
       return;
     }
@@ -263,11 +265,15 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
     setLoading(true);
     try {
       const daos = await contract.getAllDAOs();
+      const weiAmount = ethers.parseUnits(amountRequired, 9);
+      console.log("weiwei", weiAmount);
+      // console.log("Amount in Wei:", weiAmount.toString());
+      console.log(typeof amountRequired);
       const tx = await contract.createDAO(
         formData.name,
         formData.description,
-        formData.nftSupply,
-        // { value: amountRequired }
+        "3000",
+        { value: weiAmount },
       );
 
       console.log("Transaction sent:", tx.hash);
@@ -334,7 +340,7 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
               <div>
                 <p className="text-sm text-gray-600">Amount Required</p>
                 <p className="text-lg font-bold text-gray-800">
-                  {amountRequired} ETH
+                  {amountRequired} Gwei
                 </p>
               </div>
               <div>
@@ -344,7 +350,9 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
               <div>
                 <p className="text-sm text-gray-600">Owner Address</p>
                 <p className="text-sm font-mono text-gray-800">
-                  {ownerAddress ? `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}` : ''}
+                  {ownerAddress
+                    ? `${ownerAddress.slice(0, 6)}...${ownerAddress.slice(-4)}`
+                    : "Not connected"}
                 </p>
               </div>
             </div>
@@ -382,21 +390,6 @@ const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
                   rows={3}
                   className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
                   placeholder="Enter DAO description"
-                  required
-                />
-              </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  NFT Supply *
-                </label>
-                <input
-                  type="text"
-                  name="nftSupply"
-                  value={formData.nftSupply}
-                  onChange={handleInputChange}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-                  placeholder="Enter NFT supply (e.g., 1000)"
                   required
                 />
               </div>
