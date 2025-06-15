@@ -1,7 +1,8 @@
+"use client"
+
 import React, { useState, useEffect } from 'react';
 import { ethers } from 'ethers';
 
-const contractAddress = "0xD1758e1205f79C4F2dAc8f6b7D32A2E517835851"
 // Contract ABI for DAOConnect
 const DAO_CONNECT_ABI = [
   {
@@ -91,8 +92,8 @@ interface DAOFormData {
 interface DAOConnectProps { 
   contractAddress: string; // You'll need to provide this after deployment
 }
-  
-const DAOConnect: React.FC<DAOConnectProps> = () => {
+
+const DAOConnect: React.FC<DAOConnectProps> = ({ contractAddress }) => {
   const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
   const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null);
   const [contract, setContract] = useState<ethers.Contract | null>(null);
@@ -117,7 +118,8 @@ const DAOConnect: React.FC<DAOConnectProps> = () => {
         const accounts = await provider.send('eth_requestAccounts', []);
         const signer = await provider.getSigner();
         const contract = new ethers.Contract(contractAddress, DAO_CONNECT_ABI, signer);
-
+        
+        console.log(contract);
         setProvider(provider);
         setSigner(signer);
         setContract(contract);

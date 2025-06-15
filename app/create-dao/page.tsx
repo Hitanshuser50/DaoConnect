@@ -1,4 +1,5 @@
-import { CreateDAOForm } from "@/components/create-dao-form"
+import DAOConnect from "@/components/create-dao-form"
+import { DamIcon } from "lucide-react"
 
 export default function CreateDAOPage() {
   return (
@@ -11,7 +12,7 @@ export default function CreateDAOPage() {
           </p>
         </div>
 
-        <CreateDAOForm />
+        <DAOConnect contractAddress="0xD1758e1205f79C4F2dAc8f6b7D32A2E517835851" />
       </div>
     </div>
   )
