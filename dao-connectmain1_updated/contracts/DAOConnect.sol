@@ -17,27 +17,21 @@ contract DAOConnect {
         _;
     }
 
-    constructor() {
+    constructor(uint256 _amountRequired) {
         factoryOwner = msg.sender;
+        amountRequired = _amountRequired;
     }
 
-    function setAmountRequiredToCreateDao(uint256 _amt) external onlyOwner {
+    function amountRequiredToCreateDao(uint256 _amt) external onlyOwner {
         amountRequired = _amt;
-        emit AmountRequiredUpdated(_amt);
+        emit AmountRequiredUpdated(_amt); // Emit an event when the amount is updated
     }
 
-    function createDAO(
-        string memory _name,
-        string memory _description,
-        string memory _nftSupply,
-        string memory _uri
-    ) external payable {
+    function createDAO(string memory _name) external payable {
         require(msg.value >= amountRequired, "Insufficient funds provided to create DAO");
-
-        DAO dao = new DAO(_name, _description, _nftSupply, _uri, msg.sender);
+        DAO dao = new DAO(_name, msg.sender);
         daos.push(address(dao));
         daoCount++;
-
         emit DAOCreated(address(dao), _name, msg.sender);
     }
 

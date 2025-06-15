@@ -10,9 +10,7 @@ interface IERC20 {
 
 contract DAO {
     address public owner;
-    string public daoName;
-    string public description;
-    string public nftSupply;
+    string public name;
 
     struct Proposal {
         string description;
@@ -36,21 +34,9 @@ contract DAO {
         _;
     }
 
-    constructor(
-        string memory _name,
-        string memory _description,
-        string memory _nftSupply,
-        string memory _uri,
-        address _creator
-    ) {
-        daoName = _name;
-        description = _description;
-        nftSupply = _nftSupply;
+    constructor(string memory _name, address _creator) {
+        name = _name;
         owner = _creator;
-
-        // Automatically create the membership NFT with the provided URI
-        membershipNFT = new DAONFT1155(_uri, address(this));
-        emit NFT1155Created(address(membershipNFT), _uri);
     }
 
     // --- Governance ---
