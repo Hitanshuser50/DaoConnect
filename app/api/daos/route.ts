@@ -1,6 +1,7 @@
 // API route for DAO operations
 import { type NextRequest, NextResponse } from "next/server"
 import { db } from "@/lib/database"
+import { polkadotService } from "@/lib/polkadotService"
 
 export async function GET() {
   try {
@@ -46,13 +47,13 @@ export async function POST(request: NextRequest) {
       tags: [],
     })
 
-    // TODO: Deploy smart contract to blockchain
-    // const tx = await polkadotService.createDAO({
-    //   name,
-    //   description,
-    //   initialSupply,
-    //   founder
-    // })
+    //TODO: Deploy smart contract to blockchain
+    const tx = await polkadotService.createDAO({
+      name,
+      description,
+      initialSupply,
+      founder
+    })
 
     return NextResponse.json({ dao, message: "DAO created successfully" })
   } catch (error) {

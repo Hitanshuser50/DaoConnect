@@ -1,233 +1,361 @@
-"use client"
+import React, { useState, useEffect } from 'react';
+import { ethers } from 'ethers';
 
-import type React from "react"
+const contractAddress = "0xD1758e1205f79C4F2dAc8f6b7D32A2E517835851"
+// Contract ABI for DAOConnect
+const DAO_CONNECT_ABI = [
+  {
+    "inputs": [{"internalType": "uint256", "name": "_amountRequired", "type": "uint256"}],
+    "stateMutability": "nonpayable",
+    "type": "constructor"
+  },
+  {
+    "anonymous": false,
+    "inputs": [{"indexed": false, "internalType": "uint256", "name": "newAmount", "type": "uint256"}],
+    "name": "AmountRequiredUpdated",
+    "type": "event"
+  },
+  {
+    "anonymous": false,
+    "inputs": [
+      {"indexed": true, "internalType": "address", "name": "daoAddress", "type": "address"},
+      {"indexed": false, "internalType": "string", "name": "name", "type": "string"},
+      {"indexed": false, "internalType": "address", "name": "creator", "type": "address"}
+    ],
+    "name": "DAOCreated",
+    "type": "event"
+  },
+  {
+    "inputs": [
+      {"internalType": "string", "name": "_name", "type": "string"},
+      {"internalType": "string", "name": "_description", "type": "string"},
+      {"internalType": "string", "name": "_nftSupply", "type": "string"},
+      {"internalType": "string", "name": "_uri", "type": "string"}
+    ],
+    "name": "createDAO",
+    "outputs": [],
+    "stateMutability": "payable",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "getAllDAOs",
+    "outputs": [{"internalType": "address[]", "name": "", "type": "address[]"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "amountRequired",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "daoCount",
+    "outputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "", "type": "uint256"}],
+    "name": "daos",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [],
+    "name": "factoryOwner",
+    "outputs": [{"internalType": "address", "name": "", "type": "address"}],
+    "stateMutability": "view",
+    "type": "function"
+  },
+  {
+    "inputs": [{"internalType": "uint256", "name": "_amt", "type": "uint256"}],
+    "name": "setAmountRequiredToCreateDao",
+    "outputs": [],
+    "stateMutability": "nonpayable",
+    "type": "function"
+  }
+];
 
-import { useState } from "react"
-import { Card } from "@/components/ui/card"
-import { Button } from "@/components/ui/button"
-import { Input } from "@/components/ui/input"
-import { Textarea } from "@/components/ui/textarea"
-import { Label } from "@/components/ui/label"
-import { Badge } from "@/components/ui/badge"
-import { Loader2, Sparkles, CheckCircle, Info } from "lucide-react"
-import { useAuth } from "@/lib/auth"
+interface DAOFormData {
+  name: string;
+  description: string;
+  nftSupply: string;
+  uri: string;
+}
 
-// Custom tooltip component that works reliably
-const InfoTooltip = ({ children, content }: { children: React.ReactNode; content: string }) => {
-  const [isVisible, setIsVisible] = useState(false)
+interface DAOConnectProps { 
+  contractAddress: string; // You'll need to provide this after deployment
+}
+  
+const DAOConnect: React.FC<DAOConnectProps> = () => {
+  const [provider, setProvider] = useState<ethers.BrowserProvider | null>(null);
+  const [signer, setSigner] = useState<ethers.JsonRpcSigner | null>(null);
+  const [contract, setContract] = useState<ethers.Contract | null>(null);
+  const [account, setAccount] = useState<string>('');
+  const [isConnected, setIsConnected] = useState<boolean>(false);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [amountRequired, setAmountRequired] = useState<string>('0');
+  const [daoCount, setDaoCount] = useState<number>(0);
+  const [allDAOs, setAllDAOs] = useState<string[]>([]);
+  const [formData, setFormData] = useState<DAOFormData>({
+    name: '',
+    description: '',
+    nftSupply: '',
+    uri: ''
+  });
+
+  // Connect to MetaMask
+  const connectWallet = async () => {
+    try {
+      if (typeof window.ethereum !== 'undefined') {
+        const provider = new ethers.BrowserProvider(window.ethereum);
+        const accounts = await provider.send('eth_requestAccounts', []);
+        const signer = await provider.getSigner();
+        const contract = new ethers.Contract(contractAddress, DAO_CONNECT_ABI, signer);
+
+        setProvider(provider);
+        setSigner(signer);
+        setContract(contract);
+        setAccount(accounts[0]);
+        setIsConnected(true);
+
+        // Load contract data
+        await loadContractData(contract);
+      } else {
+        alert('Please install MetaMask!');
+      }
+    } catch (error) {
+      console.error('Error connecting wallet:', error);
+      alert('Error connecting wallet. Please try again.');
+    }
+  };
+
+  // Load contract data
+  const loadContractData = async (contractInstance: ethers.Contract) => {
+    try {
+      const required = await contractInstance.amountRequired();
+      const count = await contractInstance.daoCount();
+      const daos = await contractInstance.getAllDAOs();
+
+      setAmountRequired(ethers.formatEther(required));
+      setDaoCount(Number(count));
+      setAllDAOs(daos);
+    } catch (error) {
+      console.error('Error loading contract data:', error);
+    }
+  };
+
+  // Handle form input changes
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({
+      ...prev,
+      [name]: value
+    }));
+  };
+
+  // Create DAO
+  const createDAO = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!contract || !signer) {
+      alert('Please connect your wallet first!');
+      return;
+    }
+
+    if (!formData.name || !formData.description || !formData.nftSupply || !formData.uri) {
+      alert('Please fill in all fields!');
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const requiredAmount = await contract.amountRequired();
+      
+      const tx = await contract.createDAO(
+        formData.name,
+        formData.description,
+        formData.nftSupply,
+        formData.uri,
+        { value: requiredAmount }
+      );
+
+      console.log('Transaction sent:', tx.hash);
+      await tx.wait();
+      
+      alert('DAO created successfully!');
+      
+      // Reset form
+      setFormData({
+        name: '',
+        description: '',
+        nftSupply: '',
+        uri: ''
+      });
+
+      // Reload contract data
+      await loadContractData(contract);
+    } catch (error) {
+      console.error('Error creating DAO:', error);
+      alert('Error creating DAO. Please check console for details.');
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Effect to load data when contract changes
+  useEffect(() => {
+    if (contract) {
+      loadContractData(contract);
+    }
+  }, [contract]);
 
   return (
-    <div className="relative inline-block">
-      <div onMouseEnter={() => setIsVisible(true)} onMouseLeave={() => setIsVisible(false)} className="cursor-help">
-        {children}
-      </div>
-      {isVisible && (
-        <div className="absolute z-50 w-64 p-2 mt-1 text-sm text-white bg-gray-900 rounded-md shadow-lg -top-2 left-6">
-          <div className="relative">
-            {content}
-            <div className="absolute w-2 h-2 bg-gray-900 transform rotate-45 -left-1 top-2"></div>
+    <div className="max-w-4xl mx-auto p-6 bg-white rounded-lg shadow-lg">
+      <h1 className="text-3xl font-bold text-center mb-8 text-gray-800">
+        DAO Connect Interface
+      </h1>
+
+      {/* Wallet Connection */}
+      <div className="mb-8 text-center">
+        {!isConnected ? (
+          <button
+            onClick={connectWallet}
+            className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded-lg transition duration-200"
+          >
+            Connect Wallet
+          </button>
+        ) : (
+          <div className="bg-green-100 p-4 rounded-lg">
+            <p className="text-green-800">
+              Connected: {account.slice(0, 6)}...{account.slice(-4)}
+            </p>
           </div>
-        </div>
+        )}
+      </div>
+
+      {isConnected && (
+        <>
+          {/* Contract Information */}
+          <div className="mb-8 bg-gray-100 p-4 rounded-lg">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Contract Information</h2>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              <div>
+                <p className="text-sm text-gray-600">Amount Required</p>
+                <p className="text-lg font-bold text-gray-800">{amountRequired} ETH</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">DAO Count</p>
+                <p className="text-lg font-bold text-gray-800">{daoCount}</p>
+              </div>
+              <div>
+                <p className="text-sm text-gray-600">Contract Address</p>
+                <p className="text-sm font-mono text-gray-800">
+                  {contractAddress.slice(0, 6)}...{contractAddress.slice(-4)}
+                </p>
+              </div>
+            </div>
+          </div>
+
+          {/* Create DAO Form */}
+          <div className="mb-8">
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">Create New DAO</h2>
+            <form onSubmit={createDAO} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  DAO Name *
+                </label>
+                <input
+                  type="text"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter DAO name"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Description *
+                </label>
+                <textarea
+                  name="description"
+                  value={formData.description}
+                  onChange={handleInputChange}
+                  rows={3}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter DAO description"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  NFT Supply *
+                </label>
+                <input
+                  type="text"
+                  name="nftSupply"
+                  value={formData.nftSupply}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter NFT supply (e.g., 1000)"
+                  required
+                />
+              </div>
+              
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  Metadata URI *
+                </label>
+                <input
+                  type="url"
+                  name="uri"
+                  value={formData.uri}
+                  onChange={handleInputChange}
+                  className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+                  placeholder="Enter metadata URI (IPFS or HTTP)"
+                  required
+                />
+              </div>
+              
+              <button
+                type="submit"
+                disabled={loading}
+                className="w-full bg-green-500 hover:bg-green-600 disabled:bg-gray-400 text-white font-bold py-3 px-4 rounded-lg transition duration-200"
+              >
+                {loading ? 'Creating DAO...' : `Create DAO (${amountRequired} ETH)`}
+              </button>
+            </form>
+          </div>
+
+          {/* List of DAOs */}
+          <div>
+            <h2 className="text-xl font-semibold mb-4 text-gray-800">All DAOs</h2>
+            {allDAOs.length === 0 ? (
+              <p className="text-gray-600">No DAOs created yet.</p>
+            ) : (
+              <div className="space-y-2">
+                {allDAOs.map((dao, index) => (
+                  <div key={index} className="bg-gray-50 p-3 rounded-lg">
+                    <p className="font-mono text-sm">
+                      {index + 1}. {dao}
+                    </p>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+        </>
       )}
     </div>
-  )
-}
+  );
+};
 
-export function CreateDAOForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const [step, setStep] = useState(1)
-  const [formData, setFormData] = useState({
-    name: "",
-    description: "",
-    category: "",
-    uri: "",
-    nftSupply: "",
-  })
-
-  const { wallet } = useAuth()
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsLoading(true)
-
-    try {
-      const response = await fetch("/api/daos", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          ...formData,
-          founder: wallet?.address,
-        }),
-      })
-
-      if (!response.ok) {
-        throw new Error("Failed to create DAO")
-      }
-
-      const result = await response.json()
-      console.log("DAO created:", result)
-      setStep(3)
-    } catch (error) {
-      console.error("Error creating DAO:", error)
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  const categories = [
-    "DeFi",
-    "Gaming",
-    "Creative",
-    "Sustainability",
-    "Education",
-    "Healthcare",
-    "Technology",
-    "Social Impact",
-    "Investment",
-    "Other",
-  ]
-
-  if (step === 3) {
-    return (
-      <Card className="p-8 text-center">
-        <CheckCircle className="h-16 w-16 text-green-600 mx-auto mb-6" />
-        <h2 className="text-2xl font-bold text-slate-900 mb-4">DAO Created Successfully!</h2>
-        <p className="text-slate-600 mb-6">
-          Your DAO has been deployed to the blockchain. You can now start creating proposals and inviting members.
-        </p>
-        <div className="flex gap-4 justify-center">
-          <Button>View DAO Dashboard</Button>
-          <Button variant="outline">Create First Proposal</Button>
-        </div>
-      </Card>
-    )
-  }
-
-  return (
-    <Card className="p-8">
-      <form onSubmit={handleSubmit} className="space-y-6">
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="name">DAO Name *</Label>
-              <InfoTooltip content="Choose a unique and memorable name for your DAO. This will be displayed publicly and used to identify your organization.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
-            <Input
-              id="name"
-              placeholder="e.g., DeFi Innovation DAO"
-              value={formData.name}
-              onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-              required
-            />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="category">Category</Label>
-              <InfoTooltip content="Select the primary focus area of your DAO. This helps users discover and understand your organization's purpose.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
-            <select
-              id="category"
-              className="w-full px-3 py-2 border border-slate-300 rounded-md focus:outline-none focus:ring-2 focus:ring-purple-500"
-              value={formData.category}
-              onChange={(e) => setFormData({ ...formData, category: e.target.value })}
-            >
-              <option value="">Select a category</option>
-              {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        <div className="space-y-2">
-          <div className="flex items-center gap-2">
-            <Label htmlFor="description">Description *</Label>
-            <InfoTooltip content="Provide a clear description of your DAO's mission, goals, and what members can expect. This will be visible to potential members.">
-              <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-            </InfoTooltip>
-          </div>
-          <Textarea
-            id="description"
-            placeholder="Describe your DAO's mission and goals..."
-            value={formData.description}
-            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-            rows={4}
-            required
-          />
-        </div>
-
-        <div className="grid md:grid-cols-2 gap-6">
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="uri">URI</Label>
-              <InfoTooltip content="A web address or IPFS link containing additional metadata about your DAO, such as logos, detailed descriptions, or governance documents.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
-            <Input
-              id="uri"
-              placeholder="https://your-dao-website.com or ipfs://..."
-              value={formData.uri}
-              onChange={(e) => setFormData({ ...formData, uri: e.target.value })}
-            />
-          </div>
-
-          <div className="space-y-2">
-            <div className="flex items-center gap-2">
-              <Label htmlFor="nftSupply">NFT Supply</Label>
-              <InfoTooltip content="The total number of membership NFTs that can be minted. These NFTs represent membership and voting rights in your DAO.">
-                <Info className="h-4 w-4 text-slate-400 hover:text-slate-600" />
-              </InfoTooltip>
-            </div>
-            <Input
-              id="nftSupply"
-              type="number"
-              placeholder="e.g., 1000"
-              value={formData.nftSupply}
-              onChange={(e) => setFormData({ ...formData, nftSupply: e.target.value })}
-            />
-          </div>
-        </div>
-
-        <div className="bg-pink-50 border border-pink-200 rounded-lg p-4">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="h-5 w-5 text-pink-600" />
-            <span className="font-medium text-pink-900">AI Features Included</span>
-          </div>
-          <div className="flex flex-wrap gap-2">
-            <Badge variant="secondary">Proposal Assistant</Badge>
-            <Badge variant="secondary">Impact Analysis</Badge>
-            <Badge variant="secondary">Duplicate Detection</Badge>
-            <Badge variant="secondary">Smart Summaries</Badge>
-            <Badge variant="secondary">Sentiment Analysis</Badge>
-          </div>
-        </div>
-
-        <Button
-          type="submit"
-          className="w-full bg-gradient-to-r from-pink-500 to-purple-600 hover:from-pink-600 hover:to-purple-700 text-white"
-          size="lg"
-          disabled={isLoading}
-        >
-          {isLoading ? (
-            <>
-              <Loader2 className="mr-2 h-5 w-5 animate-spin" />
-              Deploying DAO...
-            </>
-          ) : (
-            "Create DAO"
-          )}
-        </Button>
-      </form>
-    </Card>
-  )
-}
+export default DAOConnect;

@@ -27,7 +27,9 @@ const pageVariants = {
   },
 }
 
-const pageTransition = {
+import type { Transition } from "framer-motion"
+
+const pageTransition: Transition = {
   type: "tween",
   ease: "anticipate",
   duration: 0.4,
